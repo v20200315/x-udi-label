@@ -1,0 +1,12 @@
+server:
+  port: 8083
+  
+spring:
+  config:
+    import: optional:nacos:x-udi-label-prod.yml
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      config:
+        namespace: fc4a65ae-c645-4b25-a220-02b2c1ec8a49
+        file-extension: yml
