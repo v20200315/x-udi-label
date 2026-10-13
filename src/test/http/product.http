@@ -1,0 +1,27 @@
+### 创建产品
+POST http://localhost:8083/api/v1/products
+Authorization: Basic victor 123456
+Content-Type: application/json
+
+{
+  "name": "一次性丁腈手套",
+  "udiDi": "6979510980000"
+}
+
+### 查询产品列表
+GET http://localhost:8083/api/v1/products
+
+### 查询产品
+GET http://localhost:8083/api/v1/products/01a1349c-4b07-726a-9940-e0b7570efa16
+
+### 修改产品
+PUT http://localhost:8083/api/v1/products/01a1349c-4b07-726a-9940-e0b7570efa16
+Content-Type: application/json
+
+{
+  "name": "一次性丁腈手套2",
+  "udiDi": "6979510980002"
+}
+
+### 停用产品
+DELETE http://localhost:8083/api/v1/products/01a1349c-4b07-726a-9940-e0b7570efa16

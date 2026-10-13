@@ -1,4 +1,4 @@
-package com.lsxuan.udilabel.nfrastructure.security;
+package com.lsxuan.udilabel.infrastructure.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ public class SecurityConfig {
             auth -> auth.requestMatchers("/login", "/auth/**", "/error").permitAll()
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/favicon.ico").permitAll()
                 .requestMatchers("/api/v1/ai/**").permitAll().requestMatchers("/console/**").permitAll()
-                .requestMatchers("/api/**").authenticated().anyRequest().permitAll());
+                .requestMatchers("/api/v1/**").permitAll().anyRequest().permitAll());
 
         return http.build();
     }
