@@ -25,7 +25,8 @@ public class Label {
     protected Label() {
     }
 
-    public static Label create(UUID productId, String name, CodeType codeType, UUID operatorId) {
+    public static Label create(UUID productId, String name, String productName, String udiDi, CodeType codeType,
+        UUID operatorId) {
         validateProductId(productId);
         validateName(name);
         validateCodeType(codeType);
@@ -38,6 +39,8 @@ public class Label {
         label.id = UuidCreator.getTimeOrderedEpoch();
         label.productId = productId;
         label.name = name;
+        label.productName = productName;
+        label.udiDi = udiDi;
         label.codeType = codeType;
         label.createdAt = now;
         label.createdBy = operatorId;

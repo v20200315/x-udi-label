@@ -26,8 +26,8 @@ public class LabelRepositoryImpl implements LabelRepository {
         data.setId(label.getId());
         data.setProductId(label.getProductId());
         data.setName(label.getName());
-        data.setProductName("");
-        data.setUdiDi("");
+        data.setProductName(label.getProductName());
+        data.setUdiDi(label.getUdiDi());
         data.setCodeType(label.getCodeType());
         data.setCodeContent("");
         data.setImageUrl("");
