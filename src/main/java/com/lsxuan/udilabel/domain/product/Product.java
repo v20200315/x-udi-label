@@ -26,20 +26,20 @@ public class Product {
         validateUdiDi(udiDi);
         validateOperatorId(operatorId);
 
-        Product customer = new Product();
+        Product product = new Product();
 
         LocalDateTime now = LocalDateTime.now();
 
-        customer.id = UuidCreator.getTimeOrderedEpoch();
-        customer.name = name;
-        customer.udiDi = udiDi;
-        customer.status = ProductStatus.ACTIVE;
-        customer.createdAt = now;
-        customer.createdBy = operatorId;
-        customer.updatedAt = now;
-        customer.updatedBy = operatorId;
+        product.id = UuidCreator.getTimeOrderedEpoch();
+        product.name = name;
+        product.udiDi = udiDi;
+        product.status = ProductStatus.ACTIVE;
+        product.createdAt = now;
+        product.createdBy = operatorId;
+        product.updatedAt = now;
+        product.updatedBy = operatorId;
 
-        return customer;
+        return product;
     }
 
     public static Product reconstitute(UUID id, String name, String udiDi, ProductStatus status,
