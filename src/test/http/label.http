@@ -6,5 +6,5 @@ Content-Type: application/json
 {
   "productId": "01a1392f-5b1d-768b-90a3-3ca8ebc776ee",
   "name": "udi di 标签",
-  "codeType": "CODE_128"
+  "codeType": "GS1_128"
 }

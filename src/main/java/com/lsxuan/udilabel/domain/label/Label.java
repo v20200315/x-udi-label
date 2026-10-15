@@ -26,7 +26,7 @@ public class Label {
     }
 
     public static Label create(UUID productId, String name, String productName, String udiDi, CodeType codeType,
-        UUID operatorId) {
+        String codeContent, String imageUrl, UUID operatorId) {
         validateProductId(productId);
         validateName(name);
         validateCodeType(codeType);
@@ -42,6 +42,8 @@ public class Label {
         label.productName = productName;
         label.udiDi = udiDi;
         label.codeType = codeType;
+        label.codeContent = codeContent;
+        label.imageUrl = imageUrl;
         label.createdAt = now;
         label.createdBy = operatorId;
         label.updatedAt = now;
