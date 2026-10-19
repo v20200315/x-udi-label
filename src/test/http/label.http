@@ -4,7 +4,7 @@ Authorization: Basic victor 123456
 Content-Type: application/json
 
 {
-  "productId": "01a1392f-5b1d-768b-90a3-3ca8ebc776ee",
+  "productId": "01a1536d-a99d-7e35-bdd0-c2985f02bb99",
   "name": "udi di 标签",
-  "codeType": "GS1_128"
+  "codeType": "GS1_DATA_MATRIX"
 }

@@ -49,7 +49,7 @@ public class LabelApplicationService {
 
         byte[] imageBytes = codeSymbolImageGenerator.generate(request.codeType(), codeContent);
 
-        String imageUrl = fileStorage.upload(imageBytes, "labels/" + UUID.randomUUID() + ".png");
+        String imageUrl = fileStorage.upload(imageBytes, "labels/" + UUID.randomUUID() + ".svg");
 
         UUID userId = currentUserContext.userId();
         Label label =

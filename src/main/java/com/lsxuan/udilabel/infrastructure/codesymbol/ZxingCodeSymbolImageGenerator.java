@@ -8,10 +8,7 @@ import com.google.zxing.common.BitMatrix;
 import com.lsxuan.udilabel.domain.label.CodeType;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
@@ -46,10 +43,6 @@ public class ZxingCodeSymbolImageGenerator implements CodeSymbolImageGenerator {
             hints.put(EncodeHintType.ERROR_CORRECTION, com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.M);
         }
 
-        // GS1 types need GS1-specific data and encoding rules.
-        // Do not assume that choosing a BarcodeFormat alone
-        // makes the content GS1-compliant.
-
         int width = switch (codeType) {
             case CODE_128, GS1_128 -> BARCODE_WIDTH;
             case QR_CODE -> QR_CODE_SIZE;
@@ -64,9 +57,9 @@ public class ZxingCodeSymbolImageGenerator implements CodeSymbolImageGenerator {
 
         try {
             BitMatrix matrix = new MultiFormatWriter().encode(codeContent, format, width, height, hints);
-
-            return toPngBytes(matrix);
-        } catch (WriterException | IOException e) {
+            String svg = toSvg(matrix);
+            return svg.getBytes(StandardCharsets.UTF_8);
+        } catch (WriterException e) {
             throw new CodeSymbolGenerationException("Failed to generate code symbol image. Type: " + codeType, e);
         }
     }
@@ -79,21 +72,57 @@ public class ZxingCodeSymbolImageGenerator implements CodeSymbolImageGenerator {
         };
     }
 
-    private byte[] toPngBytes(BitMatrix matrix) throws IOException {
-        BufferedImage image = new BufferedImage(matrix.getWidth(), matrix.getHeight(), BufferedImage.TYPE_INT_RGB);
+    private String toSvg(BitMatrix matrix) {
+        int width = matrix.getWidth();
+        int height = matrix.getHeight();
 
-        for (int y = 0; y < matrix.getHeight(); y++) {
-            for (int x = 0; x < matrix.getWidth(); x++) {
-                image.setRGB(x, y, matrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+        StringBuilder svg = new StringBuilder();
+
+        svg.append("""
+            <?xml version="1.0" encoding="UTF-8"?>
+            """);
+
+        svg.append("<svg xmlns=\"http://www.w3.org/2000/svg\"").append(" width=\"").append(width).append("\"")
+            .append(" height=\"").append(height).append("\"").append(" viewBox=\"0 0 ").append(width).append(" ")
+            .append(height).append("\">");
+
+        // White background.
+        svg.append("<rect width=\"100%\" height=\"100%\" fill=\"#ffffff\"/>");
+
+        // Black barcode modules.
+        svg.append("<path fill=\"#000000\" d=\"");
+
+        for (int y = 0; y < height; y++) {
+            int x = 0;
+
+            while (x < width) {
+                // Skip white modules.
+                while (x < width && !matrix.get(x, y)) {
+                    x++;
+                }
+
+                if (x >= width) {
+                    break;
+                }
+
+                // Find a consecutive run of black modules.
+                int startX = x;
+
+                while (x < width && matrix.get(x, y)) {
+                    x++;
+                }
+
+                int runWidth = x - startX;
+
+                // Draw one horizontal rectangle.
+                svg.append('M').append(startX).append(' ').append(y).append('h').append(runWidth).append("v1h-")
+                    .append(runWidth).append('z');
             }
         }
 
-        try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-            if (!ImageIO.write(image, "PNG", output)) {
-                throw new IOException("PNG image writer is unavailable.");
-            }
+        svg.append("\"/>");
+        svg.append("</svg>");
 
-            return output.toByteArray();
-        }
+        return svg.toString();
     }
 }
