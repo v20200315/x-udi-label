@@ -4,24 +4,34 @@ Authorization: Basic victor 123456
 Content-Type: application/json
 
 {
+  "udiDi": "06979510980000",
+  "lotNumber": "ABC123",
   "name": "一次性丁腈手套",
-  "udiDi": "6979510980000"
+  "specification": "规格",
+  "model": "型号",
+  "productionDate": "2026-10-01",
+  "expirationDate": "2031-09-30"
 }
 
 ### 查询产品列表
 GET http://localhost:8083/api/v1/products
 
 ### 查询产品
-GET http://localhost:8083/api/v1/products/01a1349c-4b07-726a-9940-e0b7570efa16
+GET http://localhost:8083/api/v1/products/01a1536b-335e-7076-b0ef-3365c15e3019
 
 ### 修改产品
-PUT http://localhost:8083/api/v1/products/01a1349c-4b07-726a-9940-e0b7570efa16
+PUT http://localhost:8083/api/v1/products/01a1536b-335e-7076-b0ef-3365c15e3019
 Content-Type: application/json
 
 {
+  "udiDi": "06979510980001",
+  "lotNumber": "ABC1234",
   "name": "一次性丁腈手套2",
-  "udiDi": "6979510980002"
+  "specification": "规格2",
+  "model": "型号2",
+  "productionDate": "2026-10-02",
+  "expirationDate": "2031-09-20"
 }
 
 ### 停用产品
-DELETE http://localhost:8083/api/v1/products/01a1349c-4b07-726a-9940-e0b7570efa16
+DELETE http://localhost:8083/api/v1/products/01a1536b-335e-7076-b0ef-3365c15e3019

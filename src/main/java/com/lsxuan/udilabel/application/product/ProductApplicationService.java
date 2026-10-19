@@ -29,7 +29,8 @@ public class ProductApplicationService {
 
         UUID userId = currentUserContext.userId();
 
-        Product product = Product.create(request.name(), request.udiDi(), userId);
+        Product product = Product.create(request.udiDi(), request.lotNumber(), request.name(), request.specification(),
+            request.model(), request.productionDate(), request.expirationDate(), userId);
         productRepository.save(product);
 
         return ProductResponse.from(product);
@@ -58,7 +59,8 @@ public class ProductApplicationService {
         Product product =
             productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product does not exist."));
 
-        product.updateBasicInfo(request.name(), request.udiDi(), userId);
+        product.updateBasicInfo(request.udiDi(), request.lotNumber(), request.name(), request.specification(),
+            request.model(), request.productionDate(), request.expirationDate(), userId);
         productRepository.update(product);
 
         return ProductResponse.from(product);

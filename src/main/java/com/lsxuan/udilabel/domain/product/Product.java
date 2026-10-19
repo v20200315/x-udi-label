@@ -3,6 +3,7 @@ package com.lsxuan.udilabel.domain.product;
 import com.github.f4b6a3.uuid.UuidCreator;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -10,8 +11,13 @@ import java.util.UUID;
 public class Product {
 
     private UUID id;
-    private String name;
     private String udiDi;
+    private String lotNumber;
+    private String name;
+    private String specification;
+    private String model;
+    private LocalDate productionDate;
+    private LocalDate expirationDate;
     private ProductStatus status;
     private LocalDateTime createdAt;
     private UUID createdBy;
@@ -21,9 +27,13 @@ public class Product {
     protected Product() {
     }
 
-    public static Product create(String name, String udiDi, UUID operatorId) {
-        validateName(name);
+    public static Product create(String udiDi, String lotNumber, String name, String specification, String model,
+        LocalDate productionDate, LocalDate expirationDate, UUID operatorId) {
         validateUdiDi(udiDi);
+        validateLotNumber(lotNumber);
+        validateName(name);
+        validateProductionDate(productionDate);
+        validateExpirationDate(expirationDate);
         validateOperatorId(operatorId);
 
         Product product = new Product();
@@ -31,8 +41,13 @@ public class Product {
         LocalDateTime now = LocalDateTime.now();
 
         product.id = UuidCreator.getTimeOrderedEpoch();
-        product.name = name;
         product.udiDi = udiDi;
+        product.lotNumber = lotNumber;
+        product.name = name;
+        product.specification = specification;
+        product.model = model;
+        product.productionDate = productionDate;
+        product.expirationDate = expirationDate;
         product.status = ProductStatus.ACTIVE;
         product.createdAt = now;
         product.createdBy = operatorId;
@@ -42,14 +57,20 @@ public class Product {
         return product;
     }
 
-    public static Product reconstitute(UUID id, String name, String udiDi, ProductStatus status,
-        LocalDateTime createdAt, UUID createdBy, LocalDateTime updatedAt, UUID updatedBy) {
+    public static Product reconstitute(UUID id, String udiDi, String lotNumber, String name, String specification,
+        String model, LocalDate productionDate, LocalDate expirationDate, ProductStatus status, LocalDateTime createdAt,
+        UUID createdBy, LocalDateTime updatedAt, UUID updatedBy) {
 
         Product product = new Product();
 
         product.id = id;
-        product.name = name;
         product.udiDi = udiDi;
+        product.lotNumber = lotNumber;
+        product.name = name;
+        product.specification = specification;
+        product.model = model;
+        product.productionDate = productionDate;
+        product.expirationDate = expirationDate;
         product.status = status;
         product.createdAt = createdAt;
         product.createdBy = createdBy;
@@ -59,16 +80,26 @@ public class Product {
         return product;
     }
 
-    public void updateBasicInfo(String name, String udiDi, UUID operatorId) {
+    public void updateBasicInfo(String udiDi, String lotNumber, String name, String specification, String model,
+        LocalDate productionDate, LocalDate expirationDate, UUID operatorId) {
         if (this.status == ProductStatus.INACTIVE) {
             throw new IllegalStateException("Deactivated product cannot be modified.");
         }
 
+        validateUdiDi(udiDi);
+        validateLotNumber(lotNumber);
         validateName(name);
+        validateProductionDate(productionDate);
+        validateExpirationDate(expirationDate);
         validateOperatorId(operatorId);
 
-        this.name = name;
         this.udiDi = udiDi;
+        this.lotNumber = lotNumber;
+        this.name = name;
+        this.specification = specification;
+        this.model = model;
+        this.productionDate = productionDate;
+        this.expirationDate = expirationDate;
         this.updatedAt = LocalDateTime.now();
         this.updatedBy = operatorId;
     }
@@ -99,6 +130,20 @@ public class Product {
         this.updatedBy = operatorId;
     }
 
+    private static void validateUdiDi(String udiDi) {
+
+        if (udiDi == null || udiDi.isBlank()) {
+            throw new IllegalArgumentException("udiDi cannot be empty.");
+        }
+    }
+
+    private static void validateLotNumber(String lotNumber) {
+
+        if (lotNumber == null || lotNumber.isBlank()) {
+            throw new IllegalArgumentException("lotNumber cannot be empty.");
+        }
+    }
+
     private static void validateName(String name) {
 
         if (name == null || name.isBlank()) {
@@ -106,10 +151,17 @@ public class Product {
         }
     }
 
-    private static void validateUdiDi(String udiDi) {
+    private static void validateProductionDate(LocalDate productionDate) {
 
-        if (udiDi == null || udiDi.isBlank()) {
-            throw new IllegalArgumentException("udiDi cannot be empty.");
+        if (productionDate == null) {
+            throw new IllegalArgumentException("productionDate cannot be empty.");
+        }
+    }
+
+    private static void validateExpirationDate(LocalDate expirationDate) {
+
+        if (expirationDate == null) {
+            throw new IllegalArgumentException("expirationDate cannot be empty.");
         }
     }
 

@@ -6,6 +6,7 @@ import com.lsxuan.udilabel.domain.product.ProductStatus;
 import com.lsxuan.udilabel.infrastructure.persistence.typehandler.UUIDTypeHandler;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,8 +16,13 @@ public class ProductDO {
 
     @TableField(typeHandler = UUIDTypeHandler.class)
     private UUID id;
-    private String name;
     private String udiDi;
+    private String lotNumber;
+    private String name;
+    private String specification;
+    private String model;
+    private LocalDate productionDate;
+    private LocalDate expirationDate;
     private ProductStatus status;
     private LocalDateTime createdAt;
     @TableField(typeHandler = UUIDTypeHandler.class)
