@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
-      th:fragment="layout(content, pageTitle, activePage)">
+      th:fragment="layout(content, pageTitle, activePage)"
+      data-bs-theme="light"
+      data-bs-theme-primary="lime">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${pageTitle} + ' | X-UDI-LABEL'">X-UDI-LABEL</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css">
+    <link rel="stylesheet" th:href="@{/console/css/tabler.min.css}"/>
+    <link rel="stylesheet" th:href="@{/console/css/tabler-themes.min.css}"/>
 </head>
 <body>
 <div class="page">
@@ -138,6 +141,6 @@
         </footer>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/js/tabler.min.js"></script>
+<script th:src="@{/console/js/tabler.min.js}"></script>
 </body>
 </html>
