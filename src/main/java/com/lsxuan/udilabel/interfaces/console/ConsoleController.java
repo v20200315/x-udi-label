@@ -24,4 +24,10 @@ public class ConsoleController {
         return "console/udi";
     }
 
+    @GetMapping({"/index2"})
+    public String index2() {
+
+        return "console/index2";
+    }
+
 }

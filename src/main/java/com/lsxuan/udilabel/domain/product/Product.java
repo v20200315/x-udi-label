@@ -11,7 +11,10 @@ import java.util.UUID;
 public class Product {
 
     private UUID id;
-    private String udiDi;
+    private String indicatorDigit;
+    private String companyPrefix;
+    private String itemReference;
+    private String checkDigit;
     private String lotNumber;
     private String name;
     private String specification;
@@ -27,9 +30,11 @@ public class Product {
     protected Product() {
     }
 
-    public static Product create(String udiDi, String lotNumber, String name, String specification, String model,
-        LocalDate productionDate, LocalDate expirationDate, UUID operatorId) {
-        validateUdiDi(udiDi);
+    public static Product create(String indicatorDigit, String companyPrefix, String itemReference, String lotNumber,
+        String name, String specification, String model, LocalDate productionDate, LocalDate expirationDate,
+        UUID operatorId) {
+        validateIndicatorDigit(indicatorDigit);
+        validateCompanyPrefixAndItemReference(companyPrefix, itemReference);
         validateLotNumber(lotNumber);
         validateName(name);
         validateProductionDate(productionDate);
@@ -41,7 +46,10 @@ public class Product {
         LocalDateTime now = LocalDateTime.now();
 
         product.id = UuidCreator.getTimeOrderedEpoch();
-        product.udiDi = udiDi;
+        product.indicatorDigit = indicatorDigit;
+        product.companyPrefix = companyPrefix;
+        product.itemReference = itemReference;
+        product.checkDigit = calculateCheckDigit(indicatorDigit, companyPrefix, itemReference);
         product.lotNumber = lotNumber;
         product.name = name;
         product.specification = specification;
@@ -57,14 +65,18 @@ public class Product {
         return product;
     }
 
-    public static Product reconstitute(UUID id, String udiDi, String lotNumber, String name, String specification,
-        String model, LocalDate productionDate, LocalDate expirationDate, ProductStatus status, LocalDateTime createdAt,
-        UUID createdBy, LocalDateTime updatedAt, UUID updatedBy) {
+    public static Product reconstitute(UUID id, String indicatorDigit, String companyPrefix, String itemReference,
+        String checkDigit, String lotNumber, String name, String specification, String model, LocalDate productionDate,
+        LocalDate expirationDate, ProductStatus status, LocalDateTime createdAt, UUID createdBy,
+        LocalDateTime updatedAt, UUID updatedBy) {
 
         Product product = new Product();
 
         product.id = id;
-        product.udiDi = udiDi;
+        product.indicatorDigit = indicatorDigit;
+        product.companyPrefix = companyPrefix;
+        product.itemReference = itemReference;
+        product.checkDigit = checkDigit;
         product.lotNumber = lotNumber;
         product.name = name;
         product.specification = specification;
@@ -80,20 +92,26 @@ public class Product {
         return product;
     }
 
-    public void updateBasicInfo(String udiDi, String lotNumber, String name, String specification, String model,
-        LocalDate productionDate, LocalDate expirationDate, UUID operatorId) {
+    public void updateBasicInfo(String indicatorDigit, String companyPrefix, String itemReference, String lotNumber,
+        String name, String specification, String model, LocalDate productionDate, LocalDate expirationDate,
+        UUID operatorId) {
+
         if (this.status == ProductStatus.INACTIVE) {
             throw new IllegalStateException("Deactivated product cannot be modified.");
         }
 
-        validateUdiDi(udiDi);
+        validateIndicatorDigit(indicatorDigit);
+        validateCompanyPrefixAndItemReference(companyPrefix, itemReference);
         validateLotNumber(lotNumber);
         validateName(name);
         validateProductionDate(productionDate);
         validateExpirationDate(expirationDate);
         validateOperatorId(operatorId);
 
-        this.udiDi = udiDi;
+        this.indicatorDigit = indicatorDigit;
+        this.companyPrefix = companyPrefix;
+        this.itemReference = itemReference;
+        this.checkDigit = calculateCheckDigit(indicatorDigit, companyPrefix, itemReference);
         this.lotNumber = lotNumber;
         this.name = name;
         this.specification = specification;
@@ -130,10 +148,26 @@ public class Product {
         this.updatedBy = operatorId;
     }
 
-    private static void validateUdiDi(String udiDi) {
+    private static void validateIndicatorDigit(String indicatorDigit) {
 
-        if (udiDi == null || udiDi.isBlank()) {
-            throw new IllegalArgumentException("udiDi cannot be empty.");
+        if (indicatorDigit == null || !indicatorDigit.matches("[0-9]")) {
+            throw new IllegalArgumentException("indicatorDigit must be a single digit from 0 to 9.");
+        }
+    }
+
+    private static void validateCompanyPrefixAndItemReference(String companyPrefix, String itemReference) {
+
+        if (companyPrefix == null || !companyPrefix.matches("[0-9]+")) {
+            throw new IllegalArgumentException("companyPrefix must contain only digits.");
+        }
+
+        if (itemReference == null || !itemReference.matches("[0-9]+")) {
+            throw new IllegalArgumentException("itemReference must contain only digits.");
+        }
+
+        if (companyPrefix.length() + itemReference.length() != 12) {
+            throw new IllegalArgumentException(
+                "companyPrefix and itemReference must contain exactly 12 digits in total.");
         }
     }
 
@@ -170,6 +204,21 @@ public class Product {
         if (operatorId == null) {
             throw new IllegalArgumentException("operatorId cannot be empty.");
         }
+    }
+
+    private static String calculateCheckDigit(String indicatorDigit, String companyPrefix, String itemReference) {
+
+        String digits = indicatorDigit + companyPrefix + itemReference;
+
+        int sum = 0;
+        int weight = 3;
+
+        for (int i = digits.length() - 1; i >= 0; i--) {
+            sum += Character.digit(digits.charAt(i), 10) * weight;
+            weight = (weight == 3) ? 1 : 3;
+        }
+
+        return String.valueOf((10 - sum % 10) % 10);
     }
 
 }

@@ -58,7 +58,10 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         ProductDO data = new ProductDO();
         data.setId(product.getId());
-        data.setUdiDi(product.getUdiDi());
+        data.setIndicatorDigit(product.getIndicatorDigit());
+        data.setCompanyPrefix(product.getCompanyPrefix());
+        data.setItemReference(product.getItemReference());
+        data.setCheckDigit(product.getCheckDigit());
         data.setLotNumber(product.getLotNumber());
         data.setName(product.getName());
         data.setSpecification(product.getSpecification());
@@ -76,8 +79,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private Product toDomain(ProductDO data) {
 
-        return Product.reconstitute(data.getId(), data.getUdiDi(), data.getLotNumber(), data.getName(),
-            data.getSpecification(), data.getModel(), data.getProductionDate(), data.getExpirationDate(),
-            data.getStatus(), data.getCreatedAt(), data.getCreatedBy(), data.getUpdatedAt(), data.getUpdatedBy());
+        return Product.reconstitute(data.getId(), data.getIndicatorDigit(), data.getCompanyPrefix(),
+            data.getItemReference(), data.getCheckDigit(), data.getLotNumber(), data.getName(), data.getSpecification(),
+            data.getModel(), data.getProductionDate(), data.getExpirationDate(), data.getStatus(), data.getCreatedAt(),
+            data.getCreatedBy(), data.getUpdatedAt(), data.getUpdatedBy());
     }
 }

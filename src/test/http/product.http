@@ -4,7 +4,9 @@ Authorization: Basic victor 123456
 Content-Type: application/json
 
 {
-  "udiDi": "06979510980000",
+  "indicatorDigit": "0",
+  "companyPrefix":"697951098",
+  "itemReference": "001",
   "lotNumber": "ABC123",
   "name": "一次性丁腈手套",
   "specification": "规格",
@@ -17,14 +19,16 @@ Content-Type: application/json
 GET http://localhost:8083/api/v1/products
 
 ### 查询产品
-GET http://localhost:8083/api/v1/products/01a1536b-335e-7076-b0ef-3365c15e3019
+GET http://localhost:8083/api/v1/products/01a1585c-2780-7e76-929a-14edcc0cebc2
 
 ### 修改产品
-PUT http://localhost:8083/api/v1/products/01a1536b-335e-7076-b0ef-3365c15e3019
+PUT http://localhost:8083/api/v1/products/01a1585c-2780-7e76-929a-14edcc0cebc2
 Content-Type: application/json
 
 {
-  "udiDi": "06979510980001",
+  "indicatorDigit": "0",
+  "companyPrefix":"697951098",
+  "itemReference": "002",
   "lotNumber": "ABC1234",
   "name": "一次性丁腈手套2",
   "specification": "规格2",
@@ -34,4 +38,4 @@ Content-Type: application/json
 }
 
 ### 停用产品
-DELETE http://localhost:8083/api/v1/products/01a1536b-335e-7076-b0ef-3365c15e3019
+DELETE http://localhost:8083/api/v1/products/01a1585c-2780-7e76-929a-14edcc0cebc2

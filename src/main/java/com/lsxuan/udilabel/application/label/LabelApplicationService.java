@@ -52,9 +52,11 @@ public class LabelApplicationService {
         String imageUrl = fileStorage.upload(imageBytes, "labels/" + UUID.randomUUID() + ".svg");
 
         UUID userId = currentUserContext.userId();
+        String udiDi =
+            product.getIndicatorDigit() + product.getCompanyPrefix() + product.getItemReference() + product.getCheckDigit();
         Label label =
-            Label.create(request.productId(), request.name(), product.getName(), product.getUdiDi(), request.codeType(),
-                codeContent, imageUrl, userId);
+            Label.create(request.productId(), request.name(), product.getName(), udiDi, request.codeType(), codeContent,
+                imageUrl, userId);
         labelRepository.save(label);
 
         return LabelResponse.from(label);

@@ -12,9 +12,10 @@ public class LabelCodeContentFactory {
         Objects.requireNonNull(codeType, "codeType cannot be null.");
         Objects.requireNonNull(product, "product cannot be null.");
 
-        String udiDi = product.getUdiDi();
+        String udiDi =
+            product.getIndicatorDigit() + product.getCompanyPrefix() + product.getItemReference() + product.getCheckDigit();
 
-        if (udiDi == null || udiDi.isBlank()) {
+        if (udiDi.isBlank()) {
             throw new IllegalArgumentException("Product UDI-DI cannot be empty.");
         }
 
