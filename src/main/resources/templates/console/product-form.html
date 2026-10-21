@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{console/layout :: layout(~{::content}, ${pageTitle}, ${activePage})}">
+<body>
+<main th:fragment="content" class="page-body">
+    <div class="container-xl">
+        <div class="col-12">
+            <form method="post" th:action="${formAction}" th:object="${productForm}">
+                <!-- Shared fields -->
+                <a class="btn btn-primary d-none d-sm-inline-block" th:href="@{/product}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true" focusable="false" class="icon">
+                        <path d="M12 5l0 14"/>
+                        <path d="M5 12l14 0"/>
+                    </svg>
+                    返回
+                </a>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>

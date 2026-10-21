@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{console/layout :: layout(~{::content}, '产品管理', 'product')}">
+      th:replace="~{console/layout :: layout(~{::content}, ${pageTitle}, ${activePage})}">
 <body>
 <main th:fragment="content" class="page-body">
     <div class="container-xl">
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-end">
-                    <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                       data-bs-target="#modal-report">
+                    <a class="btn btn-primary d-none d-sm-inline-block" th:href="@{/product/new}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                              aria-hidden="true" focusable="false" class="icon">
@@ -41,282 +40,96 @@
                     <table class="table table-selectable card-table table-vcenter text-nowrap datatable">
                         <thead>
                         <tr>
-                            <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox"
-                                                   aria-label="Select all invoices"/></th>
-                            <th class="w-1">
-                                No.
-                                <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-up -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon icon-sm">
-                                    <path d="M6 15l6 -6l6 6"/>
-                                </svg>
+                            <th class="w-1 text-center">
+                                序号
                             </th>
-                            <th>Invoice Subject</th>
-                            <th>Client</th>
-                            <th>VAT No.</th>
-                            <th>Created</th>
-                            <th>Status</th>
-                            <th>Price</th>
+                            <th>GTIN / DI</th>
+                            <th>批号</th>
+                            <th>产品名称</th>
+                            <th>产品规格</th>
+                            <th>产品型号</th>
+                            <th>生产日期</th>
+                            <th>有效期至</th>
                             <th></th>
                         </tr>
                         </thead>
 
                         <tbody>
                         <tr>
-                            <td>
-                                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox"
-                                       aria-label="Select invoice"/>
+                            <td class="text-center">
+                                <span class="text-secondary">1</span>
                             </td>
-                            <td>
-                                <span class="text-secondary">001401</span>
-                            </td>
-                            <td>
-                                <a href="invoice.html" class="text-reset"> Design Works </a>
-                            </td>
-                            <td>
-                                <span class="flag flag-xs flag-country-us me-2" role="img"
-                                      aria-label="United States"></span>
-                                Carlson Limited
-                            </td>
-                            <td>87956621</td>
-                            <td>15 Dec 2017</td>
-                            <td><span class="badge bg-success me-1"></span> Paid</td>
-                            <td>$887</td>
-
+                            <td>06979510980000</td>
+                            <td>ABC1234</td>
+                            <td>一次性丁腈手套2</td>
+                            <td>规格2</td>
+                            <td>型号2</td>
+                            <td>2026-10-02</td>
+                            <td>2031-09-20</td>
                             <td class="text-end">
                                 <div class="dropdown">
                                     <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
                                             data-bs-popper-config='{"strategy":"fixed"}'>Actions
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        <button type="button" class="dropdown-item">Action</button>
+                                        <!--                                        <button type="button" class="dropdown-item"-->
+                                        <!--                                                th:onclick="|window.location.href='@{/product/{id}/edit(id=${product.id})}'|">-->
+                                        <!--                                            Action-->
+                                        <!--                                        </button>-->
+                                        <button type="button"
+                                                class="dropdown-item"
+                                                onclick="window.location.href='/product/01a1585c-2780-7e76-929a-14edcc0cebc2/edit'">
+                                            编辑产品
+                                        </button>
                                         <button type="button" class="dropdown-item">Another action</button>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox"
-                                       aria-label="Select invoice"/>
+                            <td class="text-center">
+                                <span class="text-secondary">2</span>
                             </td>
+                            <td>06979510980001</td>
                             <td>
-                                <span class="text-secondary">001402</span>
-                            </td>
-                            <td>
-                                <a href="invoice.html" class="text-reset"> UX Wireframes </a>
-                            </td>
-                            <td>
-                                <span class="flag flag-xs flag-country-gb me-2" role="img"
-                                      aria-label="United Kingdom"></span>
-                                Adobe
-                            </td>
-                            <td>87956421</td>
-                            <td>12 Apr 2017</td>
-                            <td><span class="badge bg-warning me-1"></span> Pending</td>
-                            <td>$1200</td>
-
-                            <td class="text-end">
-                                <div class="dropdown">
-                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-popper-config='{"strategy":"fixed"}'>Actions
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <button type="button" class="dropdown-item">Action</button>
-                                        <button type="button" class="dropdown-item">Another action</button>
-                                    </div>
+                                <div class="text-truncate" style="max-width: 10em;" title="ABC1234">
+                                    ABC1234
                                 </div>
                             </td>
-                        </tr>
-                        <tr>
                             <td>
-                                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox"
-                                       aria-label="Select invoice"/>
-                            </td>
-                            <td>
-                                <span class="text-secondary">001403</span>
-                            </td>
-                            <td>
-                                <a href="invoice.html" class="text-reset"> New Dashboard </a>
-                            </td>
-                            <td>
-                                <span class="flag flag-xs flag-country-de me-2" role="img" aria-label="Germany"></span>
-                                Bluewolf
-                            </td>
-                            <td>87952621</td>
-                            <td>23 Oct 2017</td>
-                            <td><span class="badge bg-warning me-1"></span> Pending</td>
-                            <td>$534</td>
-
-                            <td class="text-end">
-                                <div class="dropdown">
-                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-popper-config='{"strategy":"fixed"}'>Actions
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <button type="button" class="dropdown-item">Action</button>
-                                        <button type="button" class="dropdown-item">Another action</button>
-                                    </div>
+                                <div class="text-truncate" style="max-width: 10em;" title="一次性丁腈手套">
+                                    一次性丁腈手套
                                 </div>
                             </td>
-                        </tr>
-                        <tr>
                             <td>
-                                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox"
-                                       aria-label="Select invoice"/>
-                            </td>
-                            <td>
-                                <span class="text-secondary">001404</span>
-                            </td>
-                            <td>
-                                <a href="invoice.html" class="text-reset"> Landing Page </a>
-                            </td>
-                            <td>
-                                <span class="flag flag-xs flag-country-br me-2" role="img" aria-label="BR"></span>
-                                Salesforce
-                            </td>
-                            <td>87953421</td>
-                            <td>2 Sep 2017</td>
-                            <td><span class="badge bg-secondary me-1"></span> Due in 2 Weeks</td>
-                            <td>$1500</td>
-
-                            <td class="text-end">
-                                <div class="dropdown">
-                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-popper-config='{"strategy":"fixed"}'>Actions
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <button type="button" class="dropdown-item">Action</button>
-                                        <button type="button" class="dropdown-item">Another action</button>
-                                    </div>
+                                <div class="text-truncate" style="max-width: 10em;"
+                                     title="规格2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2">
+                                    规格2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2
                                 </div>
                             </td>
-                        </tr>
-                        <tr>
                             <td>
-                                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox"
-                                       aria-label="Select invoice"/>
-                            </td>
-                            <td>
-                                <span class="text-secondary">001405</span>
-                            </td>
-                            <td>
-                                <a href="invoice.html" class="text-reset"> Marketing Templates </a>
-                            </td>
-                            <td>
-                                <span class="flag flag-xs flag-country-pl me-2" role="img" aria-label="Poland"></span>
-                                Printic
-                            </td>
-                            <td>87956621</td>
-                            <td>29 Jan 2018</td>
-                            <td><span class="badge bg-danger me-1"></span> Paid Today</td>
-                            <td>$648</td>
-
-                            <td class="text-end">
-                                <div class="dropdown">
-                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-popper-config='{"strategy":"fixed"}'>Actions
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <button type="button" class="dropdown-item">Action</button>
-                                        <button type="button" class="dropdown-item">Another action</button>
-                                    </div>
+                                <div class="text-truncate" style="max-width: 10em;"
+                                     title="型号2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2">
+                                    型号2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2
                                 </div>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox"
-                                       aria-label="Select invoice"/>
-                            </td>
-                            <td>
-                                <span class="text-secondary">001406</span>
-                            </td>
-                            <td>
-                                <a href="invoice.html" class="text-reset"> Sales Presentation </a>
-                            </td>
-                            <td>
-                                <span class="flag flag-xs flag-country-br me-2" role="img" aria-label="BR"></span>
-                                Tabdaq
-                            </td>
-                            <td>87956621</td>
-                            <td>4 Feb 2018</td>
-                            <td><span class="badge bg-secondary me-1"></span> Due in 3 Weeks</td>
-                            <td>$300</td>
-
+                            <td>2026-10-02</td>
+                            <td>2031-09-20</td>
                             <td class="text-end">
                                 <div class="dropdown">
                                     <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
                                             data-bs-popper-config='{"strategy":"fixed"}'>Actions
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        <button type="button" class="dropdown-item">Action</button>
-                                        <button type="button" class="dropdown-item">Another action</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox"
-                                       aria-label="Select invoice"/>
-                            </td>
-                            <td>
-                                <span class="text-secondary">001407</span>
-                            </td>
-                            <td>
-                                <a href="invoice.html" class="text-reset"> Logo &amp; Print </a>
-                            </td>
-                            <td>
-                                <span class="flag flag-xs flag-country-us me-2" role="img"
-                                      aria-label="United States"></span>
-                                Apple
-                            </td>
-                            <td>87956621</td>
-                            <td>22 Mar 2018</td>
-                            <td><span class="badge bg-success me-1"></span> Paid Today</td>
-                            <td>$2500</td>
-
-                            <td class="text-end">
-                                <div class="dropdown">
-                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-popper-config='{"strategy":"fixed"}'>Actions
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <button type="button" class="dropdown-item">Action</button>
-                                        <button type="button" class="dropdown-item">Another action</button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox"
-                                       aria-label="Select invoice"/>
-                            </td>
-                            <td>
-                                <span class="text-secondary">001408</span>
-                            </td>
-                            <td>
-                                <a href="invoice.html" class="text-reset"> Icons </a>
-                            </td>
-                            <td>
-                                <span class="flag flag-xs flag-country-pl me-2" role="img" aria-label="Poland"></span>
-                                Tookapic
-                            </td>
-                            <td>87956621</td>
-                            <td>13 May 2018</td>
-                            <td><span class="badge bg-success me-1"></span> Paid Today</td>
-                            <td>$940</td>
-
-                            <td class="text-end">
-                                <div class="dropdown">
-                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-popper-config='{"strategy":"fixed"}'>Actions
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <button type="button" class="dropdown-item">Action</button>
+                                        <!--                                        <button type="button" class="dropdown-item"-->
+                                        <!--                                                th:onclick="|window.location.href='@{/product/{id}/edit(id=${product.id})}'|">-->
+                                        <!--                                            Action-->
+                                        <!--                                        </button>-->
+                                        <button type="button"
+                                                class="dropdown-item"
+                                                onclick="window.location.href='/product/01a1585c-2780-7e76-929a-14edcc0cebc2/edit'">
+                                            编辑产品
+                                        </button>
                                         <button type="button" class="dropdown-item">Another action</button>
                                     </div>
                                 </div>
