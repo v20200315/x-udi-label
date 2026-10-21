@@ -1,10 +1,21 @@
-### 创建标签
+### 创建标签二维码
 POST http://localhost:8083/api/v1/labels
 Authorization: Basic victor 123456
 Content-Type: application/json
 
 {
-  "productId": "01a1536d-a99d-7e35-bdd0-c2985f02bb99",
+  "productId": "01a15d68-28eb-7072-9945-d2ccbbb089d0",
   "name": "udi di 标签",
   "codeType": "GS1_DATA_MATRIX"
+}
+
+### 创建标签条码
+POST http://localhost:8083/api/v1/labels
+Authorization: Basic victor 123456
+Content-Type: application/json
+
+{
+  "productId": "01a15d68-28eb-7072-9945-d2ccbbb089d0",
+  "name": "udi di 标签",
+  "codeType": "CODE_128"
 }

@@ -5,18 +5,62 @@
 <main th:fragment="content" class="page-body">
     <div class="container-xl">
         <div class="col-12">
-            <form method="post" th:action="${formAction}" th:object="${productForm}">
-                <!-- Shared fields -->
-                <a class="btn btn-primary d-none d-sm-inline-block" th:href="@{/product}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                         aria-hidden="true" focusable="false" class="icon">
-                        <path d="M12 5l0 14"/>
-                        <path d="M5 12l14 0"/>
-                    </svg>
-                    返回
-                </a>
+            <form action="" method="post" class="card">
+                <div class="card-header" style="min-height: 5rem;">
+                    <h2 class="card-title" th:text="${pageSubTitle}"></h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-2 offset-md-3 mb-3">
+                            <label class="form-label required" for="indicatorDigit">包装指示符</label>
+                            <select class="form-select" id="indicatorDigit" name="indicatorDigit" required>
+                                <option value="" disabled selected>请选择</option>
+                                <option value="0">0 - 单品</option>
+                            </select>
+                        </div>
+                    </div><div class="row">
+                        <div class="col-12 col-md-6 offset-md-3 mb-3">
+                            <label class="form-label required" for="companyPrefix">
+                                厂商识别码
+                            </label>
+                            <input type="text" class="form-control" id="companyPrefix" name="companyPrefix"
+                                   autocomplete="companyPrefix" aria-required="true"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 offset-md-3 mb-3">
+                            <label class="form-label" for="signup-phone">Phone</label>
+                            <input type="tel" class="form-control" id="signup-phone" name="phone"
+                                   placeholder="Enter phone" autocomplete="tel" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-3 offset-md-3 mb-3">
+                            <label class="form-label" for="signup-age">Age</label>
+                            <input type="number" class="form-control" id="signup-age" name="age" placeholder="Enter age"
+                                   required>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
             </form>
+
+            <!--            <form method="post" th:action="${formAction}" th:object="${productForm}">-->
+            <!--                &lt;!&ndash; Shared fields &ndash;&gt;-->
+            <!--                <a class="btn btn-primary d-none d-sm-inline-block" th:href="@{/product}">-->
+            <!--                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"-->
+            <!--                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"-->
+            <!--                         aria-hidden="true" focusable="false" class="icon">-->
+            <!--                        <path d="M12 5l0 14"/>-->
+            <!--                        <path d="M5 12l14 0"/>-->
+            <!--                    </svg>-->
+            <!--                    返回-->
+            <!--                </a>-->
+            <!--            </form>-->
         </div>
     </div>
 </main>

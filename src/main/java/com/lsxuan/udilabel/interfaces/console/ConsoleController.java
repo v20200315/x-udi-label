@@ -20,6 +20,7 @@ public class ConsoleController {
     public String productList(Model model) {
 
         model.addAttribute("pageTitle", "产品管理");
+        model.addAttribute("pageSubTitle", "产品列表");
         model.addAttribute("activePage", "product");
         // Add list data for rendering
         return "console/product";
@@ -28,7 +29,8 @@ public class ConsoleController {
     @GetMapping("/product/new")
     public String newProduct(Model model) {
 
-        model.addAttribute("pageTitle", "添加产品");
+        model.addAttribute("pageTitle", "产品管理");
+        model.addAttribute("pageSubTitle", "添加产品");
         model.addAttribute("activePage", "product");
         // Add an empty form model
         return "console/product-form";
@@ -37,7 +39,8 @@ public class ConsoleController {
     @GetMapping("/product/{id}/edit")
     public String editProduct(@PathVariable UUID id, Model model) {
 
-        model.addAttribute("pageTitle", "编辑产品");
+        model.addAttribute("pageTitle", "产品管理");
+        model.addAttribute("pageSubTitle", "编辑产品");
         model.addAttribute("activePage", "product");
         model.addAttribute("productId", id);
         // Add the selected product as the form model

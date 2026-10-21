@@ -6,7 +6,7 @@ Content-Type: application/json
 {
   "indicatorDigit": "0",
   "companyPrefix":"697951098",
-  "itemReference": "001",
+  "itemReference": "000",
   "lotNumber": "ABC123",
   "name": "一次性丁腈手套",
   "specification": "规格",
