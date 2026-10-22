@@ -4,105 +4,100 @@
 <body>
 <main th:fragment="content" class="page-body">
     <div class="container-xl">
-        <div class="card">
-            <div class="card-header" style="min-height: 5rem;">
-                <h2 class="card-title" th:text="${pageSubTitle}">生成标签</h2>
-            </div>
-            <div class="card-body">
-                <div class="row row-cards">
-                    <div class="col-12 col-md-6">
-                        <div class="card">
-                            <div class="card-stamp">
-                                <div class="card-stamp-icon bg-yellow">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         width="24"
-                                         height="24"
-                                         viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="2"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round"
-                                         class="icon icon-tabler icons-tabler-outline icon-tabler-package">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"/>
-                                        <path d="M12 12l8 -4.5"/>
-                                        <path d="M12 12l0 9"/>
-                                        <path d="M12 12l-8 -4.5"/>
-                                        <path d="M16 5.25l-8 4.5"/>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <h2 class="card-title">商品信息</h2>
-                                <p class="text-secondary">06979510980000</p>
-                                <p class="text-secondary">ABC1234</p>
-                                <p class="text-secondary">一次性丁腈手套</p>
-                                <p class="text-secondary">
-                                    规格2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2</p>
-                                <p class="text-secondary">
-                                    型号2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2</p>
-                            </div>
+        <div class="row row-cards">
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-stamp">
+                        <div class="card-stamp-icon bg-yellow">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="24"
+                                 height="24"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="icon icon-tabler icons-tabler-outline icon-tabler-package">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"/>
+                                <path d="M12 12l8 -4.5"/>
+                                <path d="M12 12l0 9"/>
+                                <path d="M12 12l-8 -4.5"/>
+                                <path d="M16 5.25l-8 4.5"/>
+                            </svg>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <form action="" method="post" class="card border-0 shadow-none">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12 col-md-6 offset-md-1 mb-3">
-                                        <div class="form-label">选择模版</div>
-                                        <fieldset>
-                                            <label class="form-check">
-                                                <input class="form-check-input" type="radio" name="radios" checked />
-                                                <span class="form-check-label">条码 (10)+(11)</span>
-                                            </label>
-                                            <label class="form-check">
-                                                <input class="form-check-input" type="radio" name="radios" />
-                                                <span class="form-check-label">条码 (10)+(17)</span>
-                                            </label>
-                                            <label class="form-check">
-                                                <input class="form-check-input" type="radio"  />
-                                                <span class="form-check-label">条码 (10)+(11)+(17)</span>
-                                            </label>
-                                            <label class="form-check">
-                                                <input class="form-check-input" type="radio" name="radios" />
-                                                <span class="form-check-label">DM (10)+(11)</span>
-                                            </label>
-                                            <label class="form-check">
-                                                <input class="form-check-input" type="radio" name="radios" />
-                                                <span class="form-check-label">DM (10)+(17)</span>
-                                            </label>
-                                            <label class="form-check">
-                                                <input class="form-check-input" type="radio"  />
-                                                <span class="form-check-label">DM (10)+(11)+(17)</span>
-                                            </label>
-                                            <label class="form-check">
-                                                <input class="form-check-input" type="radio" name="radios"  />
-                                                <span class="form-check-label">条码+DM (10)+(11)</span>
-                                            </label>
-                                            <label class="form-check">
-                                                <input class="form-check-input" type="radio" name="radios" />
-                                                <span class="form-check-label">条码+DM (10)+(17)</span>
-                                            </label>
-                                            <label class="form-check">
-                                                <input class="form-check-input" type="radio"  />
-                                                <span class="form-check-label">条码+DM (10)+(11)+(17)</span>
-                                            </label>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                    <div class="card-body">
+                        <h2 class="card-title">商品信息</h2>
+                        <p class="text-secondary">06979510980000</p>
+                        <p class="text-secondary">ABC1234</p>
+                        <p class="text-secondary">一次性丁腈手套</p>
+                        <p class="text-secondary">
+                            规格2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2</p>
+                        <p class="text-secondary">
+                            型号2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2</p>
                     </div>
                 </div>
             </div>
-            <div class="card-footer text-end">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <a class="btn btn-outline-secondary" th:href="@{/product}">返回</a>
+            <div class="col-12 col-md-6">
+                <form action="" method="post" class="card">
+                    <div class="card-header">
+                        <h2 class="card-title" th:text="${pageSubTitle}"></h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6 offset-md-1 mb-3">
+                                <div class="form-label">选择模版</div>
+                                <fieldset>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" name="radios" checked />
+                                        <span class="form-check-label">条码 (10)+(11)</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" name="radios" />
+                                        <span class="form-check-label">条码 (10)+(17)</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio"  />
+                                        <span class="form-check-label">条码 (10)+(11)+(17)</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" name="radios" />
+                                        <span class="form-check-label">DM (10)+(11)</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" name="radios" />
+                                        <span class="form-check-label">DM (10)+(17)</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio"  />
+                                        <span class="form-check-label">DM (10)+(11)+(17)</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" name="radios"  />
+                                        <span class="form-check-label">条码+DM (10)+(11)</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" name="radios" />
+                                        <span class="form-check-label">条码+DM (10)+(17)</span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio"  />
+                                        <span class="form-check-label">条码+DM (10)+(11)+(17)</span>
+                                    </label>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">生成标签</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-
-
     </div>
 </main>
 </body>
