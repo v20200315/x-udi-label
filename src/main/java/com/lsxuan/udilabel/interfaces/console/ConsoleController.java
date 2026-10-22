@@ -47,6 +47,16 @@ public class ConsoleController {
         return "console/product-form";
     }
 
+    @GetMapping("/product/{id}/label")
+    public String generateLabelPage(@PathVariable UUID id, Model model) {
+
+        model.addAttribute("pageTitle", "产品管理");
+        model.addAttribute("pageSubTitle", "生成标签");
+        model.addAttribute("activePage", "product");
+        model.addAttribute("productId", id);
+        return "console/product-label";
+    }
+
     @GetMapping("/udi")
     public String udi() {
 
