@@ -1,6 +1,6 @@
 package com.lsxuan.udilabel.application.label;
 
-import com.lsxuan.udilabel.domain.label.Label;
+import com.lsxuan.udilabel.domain.label.CodeType;
 import com.lsxuan.udilabel.domain.label.LabelCodeContentFactory;
 import com.lsxuan.udilabel.domain.label.LabelRepository;
 import com.lsxuan.udilabel.domain.product.Product;
@@ -8,8 +8,6 @@ import com.lsxuan.udilabel.domain.product.ProductRepository;
 import com.lsxuan.udilabel.infrastructure.codesymbol.CodeSymbolImageGenerator;
 import com.lsxuan.udilabel.infrastructure.security.CurrentUserContext;
 import com.lsxuan.udilabel.infrastructure.storage.FileStorage;
-import com.lsxuan.udilabel.interfaces.api.v1.label.dto.CreateLabelRequest;
-import com.lsxuan.udilabel.interfaces.api.v1.label.dto.LabelResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,26 +37,21 @@ public class LabelApplicationService {
         this.currentUserContext = currentUserContext;
     }
 
-    @Transactional
-    public LabelResponse create(CreateLabelRequest request) {
+    @Transactional(readOnly = true)
+    public byte[] generate(UUID productId, String templateCode) {
 
-        Product product = productRepository.findById(request.productId())
-            .orElseThrow(() -> new ProductNotFoundException("Product not found: " + request.productId()));
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new IllegalArgumentException("Product does not exist."));
 
-        String codeContent = labelCodeContentFactory.generate(request.codeType(), product);
+        CodeType codeType = resolveCodeType(templateCode);
+        String codeContent = labelCodeContentFactory.generate(codeType, product);
 
-        byte[] imageBytes = codeSymbolImageGenerator.generate(request.codeType(), codeContent);
-
-        String imageUrl = fileStorage.upload(imageBytes, "labels/" + UUID.randomUUID() + ".svg");
-
-        UUID userId = currentUserContext.userId();
-        String udiDi =
-            product.getIndicatorDigit() + product.getCompanyPrefix() + product.getItemReference() + product.getCheckDigit();
-        Label label =
-            Label.create(request.productId(), request.name(), product.getName(), udiDi, request.codeType(), codeContent,
-                imageUrl, userId);
-        labelRepository.save(label);
-
-        return LabelResponse.from(label);
+        return codeSymbolImageGenerator.generate(codeType, codeContent);
     }
+
+    private CodeType resolveCodeType(String templateCode) {
+
+        return CodeType.GS1_DATA_MATRIX;
+    }
+
 }

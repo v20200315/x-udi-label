@@ -47,7 +47,7 @@ public class ConsoleController {
         return "console/product-form";
     }
 
-    @GetMapping("/product/{id}/label")
+    @GetMapping("/product/{id}/labels/generate")
     public String generateLabelPage(@PathVariable UUID id, Model model) {
 
         model.addAttribute("pageTitle", "产品管理");

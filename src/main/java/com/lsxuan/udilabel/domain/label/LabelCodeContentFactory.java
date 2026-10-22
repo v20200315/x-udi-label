@@ -19,8 +19,8 @@ public class LabelCodeContentFactory {
             throw new IllegalArgumentException("Product UDI-DI cannot be empty.");
         }
 
-//        String codeContent = "(01)" + udiDi + "(11)261001(17)310930(10)ABC123";
-        String codeContent = "(01)" + udiDi;
+        String codeContent = "(01)" + udiDi + "(11)261001(17)310930(10)ABC123";
+//        String codeContent = "(01)" + udiDi;
 
         return switch (codeType) {
             case CODE_128, QR_CODE, GS1_DATA_MATRIX, GS1_128 -> codeContent;

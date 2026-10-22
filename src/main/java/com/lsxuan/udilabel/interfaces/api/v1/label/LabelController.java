@@ -1,27 +1,28 @@
 package com.lsxuan.udilabel.interfaces.api.v1.label;
 
 import com.lsxuan.udilabel.application.label.LabelApplicationService;
-import com.lsxuan.udilabel.interfaces.api.v1.label.dto.CreateLabelRequest;
-import com.lsxuan.udilabel.interfaces.api.v1.label.dto.LabelResponse;
+import com.lsxuan.udilabel.interfaces.api.v1.label.dto.GenerateLabelPreviewRequest;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/labels")
+@RequiredArgsConstructor
 public class LabelController {
 
     private final LabelApplicationService labelApplicationService;
 
-    public LabelController(LabelApplicationService labelApplicationService) {
+    @PostMapping(value = "/generate", produces = "image/svg+xml")
+    public ResponseEntity<byte[]> generate(@Valid @ModelAttribute GenerateLabelPreviewRequest request) {
 
-        this.labelApplicationService = labelApplicationService;
-    }
+        byte[] svg = labelApplicationService.generate(request.productId(), request.templateCode());
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public LabelResponse create(@Valid @RequestBody CreateLabelRequest request) {
-
-        return labelApplicationService.create(request);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("image/svg+xml;charset=UTF-8")).body(svg);
     }
 }
