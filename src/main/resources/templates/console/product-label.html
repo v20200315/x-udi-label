@@ -45,8 +45,14 @@
                 </div>
                 <div class="row row-cards mb-3">
                     <div class="col-12">
-                        <form id="generateLabelForm"
-                              th:action="@{/api/v1/labels/generate}"
+                        <!--                        <form id="generateLabelForm"-->
+                        <!--                              th:action="@{/api/v1/labels/generate}"-->
+                        <!--                              method="post"-->
+                        <!--                              class="card">-->
+                        <form th:action="@{/console/labels/generate}"
+                              hx-post="/console/labels/generate"
+                              hx-target="#labelResult"
+                              hx-swap="outerHTML"
                               method="post"
                               class="card">
                             <input type="hidden"
@@ -124,17 +130,28 @@
                     </div>
 
                     <div class="card-body">
-                        <div id="labelPreview"
-                             class="d-flex justify-content-center align-items-center"
-                             style="min-height: 300px; overflow: auto;">
-                                <span class="text-secondary">
+                        <div id="labelResult"
+                             th:fragment="result"
+                             class="d-flex flex-column"
+                             style="min-height: 300px;">
+
+                            <div id="labelPreview"
+                                 class="d-flex justify-content-center align-items-center flex-grow-1"
+                                 style="min-height: 300px; overflow: auto;">
+
+                                <th:block th:if="${svg != null}">
+                                    <div th:utext="${svg}"></div>
+                                </th:block>
+
+                                <span th:unless="${svg != null}" class="text-secondary">
                                     请选择模板并点击生成标签
                                 </span>
-                        </div>
-
-                        <div id="labelError"
-                             class="alert alert-danger mt-3 d-none"
-                             role="alert">
+                            </div>
+                            <div th:if="${error != null}"
+                                 class="alert alert-danger mt-3"
+                                 role="alert"
+                                 th:text="${error}">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -145,83 +162,3 @@
 </main>
 </body>
 </html>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('generateLabelForm');
-        const preview = document.getElementById('labelPreview');
-        const error = document.getElementById('labelError');
-        const button = form.querySelector('button[type="submit"]');
-
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            error.textContent = '';
-            error.classList.add('d-none');
-
-            const template = form.querySelector(
-                'input[name="templateCode"]:checked'
-            );
-
-            if (!template) {
-                error.textContent = '请选择标签模板';
-                error.classList.remove('d-none');
-                return;
-            }
-
-            button.disabled = true;
-            button.textContent = '生成中...';
-
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-                        'Accept': 'image/svg+xml'
-                    },
-                    body: new URLSearchParams(new FormData(form))
-                });
-
-                if (!response.ok) {
-                    throw new Error(
-                        await response.text() || '生成标签失败'
-                    );
-                }
-
-                const svgText = await response.text();
-
-                // 校验返回内容确实是 SVG XML
-                const documentXml = new DOMParser().parseFromString(
-                    svgText,
-                    'image/svg+xml'
-                );
-
-                if (
-                    documentXml.querySelector('parsererror') ||
-                    documentXml.documentElement.localName !== 'svg' ||
-                    documentXml.documentElement.namespaceURI !==
-                    'http://www.w3.org/2000/svg'
-                ) {
-                    throw new Error('后台返回的 SVG 格式不正确');
-                }
-
-                // 使用 XML 文档导入节点，不直接使用 innerHTML
-                const svg = document.importNode(
-                    documentXml.documentElement,
-                    true
-                );
-
-                svg.style.maxWidth = '100%';
-                svg.style.height = 'auto';
-
-                preview.replaceChildren(svg);
-
-            } catch (e) {
-                error.textContent = e.message || '生成标签失败，请稍后重试';
-                error.classList.remove('d-none');
-            } finally {
-                button.disabled = false;
-                button.textContent = '生成标签';
-            }
-        });
-    });
-</script>

@@ -1,14 +1,22 @@
 package com.lsxuan.udilabel.interfaces.console;
 
+import com.lsxuan.udilabel.application.label.LabelApplicationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
 public class ConsoleController {
+
+    private final LabelApplicationService labelApplicationService;
 
     @GetMapping({"/", "/index", "/console"})
     public String index() {
@@ -67,6 +75,27 @@ public class ConsoleController {
     public String index2() {
 
         return "console/index2";
+    }
+
+    @PostMapping("/console/labels/generate")
+    public String generateLabel(
+        @RequestParam UUID productId,
+        @RequestParam String templateCode,
+        Model model) {
+
+        try {
+            byte[] svgBytes =  labelApplicationService.generate(
+                productId, templateCode
+            );
+
+            String svg = new String(svgBytes, StandardCharsets.UTF_8);
+            model.addAttribute("svg", svg);
+
+        } catch (Exception e) {
+            model.addAttribute("error", "标签生成失败，请稍后重试");
+        }
+
+        return "console/label/fragments :: result";
     }
 
 }
