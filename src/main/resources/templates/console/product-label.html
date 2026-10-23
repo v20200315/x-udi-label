@@ -45,19 +45,13 @@
                 </div>
                 <div class="row row-cards mb-3">
                     <div class="col-12">
-                        <!--                        <form id="generateLabelForm"-->
-                        <!--                              th:action="@{/api/v1/labels/generate}"-->
-                        <!--                              method="post"-->
-                        <!--                              class="card">-->
                         <form th:action="@{/console/labels/generate}"
                               hx-post="/console/labels/generate"
                               hx-target="#labelResult"
                               hx-swap="outerHTML"
                               method="post"
                               class="card">
-                            <input type="hidden"
-                                   name="productId"
-                                   th:value="${productId}">
+                            <input type="hidden" name="productId" th:value="${productId}">
                             <div class="card-header">
                                 <h2 class="card-title" th:text="${pageSubTitle}"></h2>
                             </div>
@@ -128,36 +122,28 @@
                     <div class="card-header">
                         <h2 class="card-title">标签预览</h2>
                     </div>
-
                     <div class="card-body">
-                        <div id="labelResult"
-                             th:fragment="result"
-                             class="d-flex flex-column"
-                             style="min-height: 300px;">
-
-                            <div id="labelPreview"
-                                 class="d-flex justify-content-center align-items-center flex-grow-1"
-                                 style="min-height: 300px; overflow: auto;">
-
-                                <th:block th:if="${svg != null}">
-                                    <div th:utext="${svg}"></div>
-                                </th:block>
-
-                                <span th:unless="${svg != null}" class="text-secondary">
-                                    请选择模板并点击生成标签
-                                </span>
-                            </div>
-                            <div th:if="${error != null}"
-                                 class="alert alert-danger mt-3"
-                                 role="alert"
-                                 th:text="${error}">
-                            </div>
+                        <!--                        <div id="labelResult" th:fragment="result" class="d-flex flex-column"-->
+                        <!--                             style="min-height: 300px;">-->
+                        <!--                            <div id="labelPreview" class="d-flex justify-content-center align-items-center flex-grow-1"-->
+                        <!--                                 style="min-height: 300px; overflow: auto;">-->
+                        <!--                                <th:block th:if="${svg != null}">-->
+                        <!--                                    <div th:utext="${svg}"></div>-->
+                        <!--                                </th:block>-->
+                        <!--                                <span th:unless="${svg != null}" class="text-secondary">-->
+                        <!--                                    请选择模板并点击生成标签-->
+                        <!--                                </span>-->
+                        <!--                            </div>-->
+                        <!--                            <div th:if="${error != null}" class="alert alert-danger mt-3" role="alert"-->
+                        <!--                                 th:text="${error}">-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <div th:replace="~{console/label/fragments :: result}">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </main>
 </body>

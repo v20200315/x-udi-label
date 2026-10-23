@@ -1,32 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <body>
-
-<div th:fragment="result"
-     id="labelResult"
-     class="d-flex flex-column"
-     style="min-height: 300px;">
-
+<div th:fragment="result" id="labelResult" class="d-flex flex-column" style="min-height: 300px;">
     <div class="d-flex justify-content-center align-items-center flex-grow-1"
          style="min-height: 300px; overflow: auto;">
-
         <div th:if="${svg != null}"
              th:utext="${svg}">
         </div>
-
-        <span th:unless="${svg != null}"
-              class="text-secondary">
+        <span th:unless="${svg != null}" class="text-secondary">
             请选择模板并点击生成标签
         </span>
     </div>
-
-    <div th:if="${error != null}"
-         class="alert alert-danger mt-3"
-         role="alert"
-         th:text="${error}">
+    <div th:if="${error != null}" class="alert alert-danger mt-3" role="alert" th:text="${error}">
     </div>
 </div>
-
 </body>
 </html>
