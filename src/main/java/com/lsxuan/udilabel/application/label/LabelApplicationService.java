@@ -9,9 +9,11 @@ import com.lsxuan.udilabel.infrastructure.codesymbol.CodeSymbolImageGenerator;
 import com.lsxuan.udilabel.infrastructure.security.CurrentUserContext;
 import com.lsxuan.udilabel.infrastructure.storage.FileStorage;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -47,6 +49,18 @@ public class LabelApplicationService {
         String codeContent = labelCodeContentFactory.generate(codeType, product);
 
         return codeSymbolImageGenerator.generate(codeType, codeContent);
+    }
+
+    public byte[] generatePdf() {
+        try {
+            ClassPathResource resource = new ClassPathResource("mock/mock.pdf");
+
+            try (var inputStream = resource.getInputStream()) {
+                return inputStream.readAllBytes();
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("生成标签 PDF 失败", e);
+        }
     }
 
     private CodeType resolveCodeType(String templateCode) {

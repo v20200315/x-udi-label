@@ -3,6 +3,9 @@ package com.lsxuan.udilabel.interfaces.console;
 import com.lsxuan.udilabel.application.label.LabelApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Slf4j
@@ -57,18 +59,41 @@ public class ProductPageController {
     @PostMapping("/console/labels/generate")
     public String generateLabel(@RequestParam UUID productId, @RequestParam String templateCode, Model model) {
 
-        try {
-            byte[] svgBytes = labelApplicationService.generate(productId, templateCode);
-            String svg = new String(svgBytes, StandardCharsets.UTF_8);
-            model.addAttribute("svg", svg);
-        } catch (Exception e) {
-            log.error("Failed to generate label preview. productId={}, templateCode={}", productId, templateCode, e);
-            model.addAttribute("error", "标签生成失败，请稍后重试");
-        }
+        // Mock：模拟标签生成成功
+        String labelId = "mock-label-001";
+
+        model.addAttribute("labelId", labelId);
+        model.addAttribute("fileName", "product-label.pdf");
+        model.addAttribute("previewUrl", "/console/labels/" + labelId + "/preview");
+        model.addAttribute("downloadUrl", "/console/labels/" + labelId + "/download");
+
         return "console/label/fragments :: result";
     }
 
+    /**
+     * 预览标签 PDF。
+     */
+    @GetMapping("/console/labels/{labelId}/preview")
+    public ResponseEntity<byte[]> previewLabel(@PathVariable String labelId) {
+        byte[] pdfBytes = labelApplicationService.generatePdf();
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"product-label.pdf\"").body(pdfBytes);
+    }
+
+    /**
+     * 下载标签 PDF。
+     */
+    @GetMapping("/console/labels/{labelId}/download")
+    public ResponseEntity<byte[]> downloadLabel(@PathVariable String labelId) {
+        byte[] pdfBytes = labelApplicationService.generatePdf();
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"product-label.pdf\"").body(pdfBytes);
+    }
+
     private void setPageMetadata(Model model, String pageSubTitle) {
+
         model.addAttribute("pageTitle", "产品管理");
         model.addAttribute("pageSubTitle", pageSubTitle);
         model.addAttribute("activePage", "product");
