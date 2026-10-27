@@ -3,6 +3,7 @@ package com.lsxuan.udilabel.interfaces.console;
 import com.lsxuan.udilabel.application.label.LabelApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,74 +39,62 @@ public class ProductPageController {
         return "console/product-form";
     }
 
-    @GetMapping("/product/{id}/edit")
-    public String editProductPage(@PathVariable UUID id, Model model) {
+    @GetMapping("/product/{productId}/edit")
+    public String editProductPage(@PathVariable UUID productId, Model model) {
 
         setPageMetadata(model, "编辑产品");
-        model.addAttribute("productId", id);
+        model.addAttribute("productId", productId);
         // TODO 根据 id 查询产品，并放入 Model。
         return "console/product-form";
     }
 
-    @GetMapping("/product/{id}/labels/generate")
-    public String generateLabelPage(@PathVariable UUID id, Model model) {
+    @GetMapping("/product/{productId}/label/generate")
+    public String generateLabelPage(@PathVariable UUID productId, Model model) {
 
         setPageMetadata(model, "生成标签");
-        model.addAttribute("productId", id);
+        model.addAttribute("productId", productId);
         // TODO 根据 id 查询产品，并放入 Model。
         return "console/product-label";
     }
 
-//    @PostMapping("/console/labels/generate")
-//    public String generateLabel(@RequestParam UUID productId, @RequestParam String templateCode, Model model) {
-//
-//        // Mock：模拟标签生成成功
-//        String labelId = "mock-label-001";
-//
-//        model.addAttribute("labelId", labelId);
-//        model.addAttribute("fileName", "product-label.pdf");
-//        model.addAttribute("previewUrl", "/console/labels/" + labelId + "/preview");
-//        model.addAttribute("downloadUrl", "/console/labels/" + labelId + "/download");
-//
-//        return "console/label/fragments :: result";
-//    }
-
-    @PostMapping("/console/labels/generate")
+    @PostMapping("/product/label/generate")
     public String generateLabel(@RequestParam UUID productId, @RequestParam String templateCode, Model model) {
 
-        model.addAttribute("fileName", "product-label.pdf");
-
-        String queryParams = "?productId=" + productId + "&templateCode=" + templateCode;
-
-        model.addAttribute("previewUrl", "/console/labels/preview" + queryParams);
-
-        model.addAttribute("downloadUrl", "/console/labels/download" + queryParams);
-
+        model.addAttribute("previewUrl", "/product/" + productId + "/labels/preview?templateCode=" + templateCode);
+        model.addAttribute("downloadUrl", "/product/" + productId + "/labels/download?templateCode=" + templateCode);
+        model.addAttribute("svgDownloadUrl",
+            "/product/" + productId + "/labels/download.svg?templateCode=" + templateCode);
         return "console/label/fragments :: result";
     }
 
-    /**
-     * 预览标签 PDF。
-     */
-    @GetMapping("/console/labels/preview")
-    public ResponseEntity<byte[]> previewLabel(@RequestParam UUID productId, @RequestParam String templateCode) {
+    @GetMapping("/product/{productId}/labels/preview")
+    public ResponseEntity<byte[]> previewLabel(@PathVariable UUID productId, @RequestParam String templateCode) {
 
         byte[] pdfBytes = labelApplicationService.generatePdf(productId, templateCode);
-
+        String fileName = "product-label-" + System.currentTimeMillis() + ".pdf";
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
-            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"product-label.pdf\"").body(pdfBytes);
+            .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.inline().filename(fileName).build().toString())
+            .body(pdfBytes);
     }
 
-    /**
-     * 下载标签 PDF。
-     */
-    @GetMapping("/console/labels/download")
-    public ResponseEntity<byte[]> downloadLabel(@RequestParam UUID productId, @RequestParam String templateCode) {
+    @GetMapping("/product/{productId}/labels/download")
+    public ResponseEntity<byte[]> downloadLabel(@PathVariable UUID productId, @RequestParam String templateCode) {
 
         byte[] pdfBytes = labelApplicationService.generatePdf(productId, templateCode);
-
+        String fileName = "product-label-" + System.currentTimeMillis() + ".pdf";
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"product-label.pdf\"").body(pdfBytes);
+            .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(fileName).build().toString())
+            .body(pdfBytes);
+    }
+
+    @GetMapping("/product/{productId}/labels/download.svg")
+    public ResponseEntity<byte[]> downloadSvg(@PathVariable UUID productId, @RequestParam String templateCode) {
+
+        byte[] svgBytes = labelApplicationService.generateSvg(productId, templateCode);
+        String fileName = "product-label-" + System.currentTimeMillis() + ".svg";
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("image/svg+xml"))
+            .header(HttpHeaders.CONTENT_DISPOSITION,
+                ContentDisposition.attachment().filename(fileName).build().toString()).body(svgBytes);
     }
 
     private void setPageMetadata(Model model, String pageSubTitle) {

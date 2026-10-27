@@ -17,18 +17,12 @@ import java.util.Objects;
 @Component("zxingCodeSymbolImageGenerator")
 public class ZxingCodeSymbolImageGenerator implements CodeSymbolImageGenerator {
 
-    private static final int BARCODE_WIDTH = 1200;
-    private static final int BARCODE_HEIGHT = 100;
-
-    private static final int QR_CODE_SIZE = 300;
-    private static final int DATA_MATRIX_SIZE = 300;
-
     private static final int MARGIN = 2;
 
     @Override
     public byte[] generate(LabelTemplate labelTemplate, String codeContent) {
-        Objects.requireNonNull(labelTemplate, "labelTemplate cannot be null.");
 
+        Objects.requireNonNull(labelTemplate, "labelTemplate cannot be null.");
         if (codeContent == null || codeContent.isBlank()) {
             throw new IllegalArgumentException("codeContent cannot be empty.");
         }
@@ -40,12 +34,7 @@ public class ZxingCodeSymbolImageGenerator implements CodeSymbolImageGenerator {
         hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         hints.put(EncodeHintType.MARGIN, MARGIN);
 
-        if (labelTemplate.getCodeType() == CodeType.QR_CODE) {
-            hints.put(EncodeHintType.ERROR_CORRECTION, com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.M);
-        }
-
         int width = labelTemplate.getWidth();
-
         int height = labelTemplate.getHeight();
 
         try {
@@ -60,8 +49,7 @@ public class ZxingCodeSymbolImageGenerator implements CodeSymbolImageGenerator {
 
     private BarcodeFormat resolveFormat(CodeType codeType) {
         return switch (codeType) {
-            case CODE_128, GS1_128 -> BarcodeFormat.CODE_128;
-            case QR_CODE -> BarcodeFormat.QR_CODE;
+            case GS1_128 -> BarcodeFormat.CODE_128;
             case GS1_DATA_MATRIX -> BarcodeFormat.DATA_MATRIX;
         };
     }

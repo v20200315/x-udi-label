@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>产品条码标签</title>
+    <title>Barcode Label</title>
 
     <style>
         @page {
@@ -50,7 +50,7 @@
 <body>
 <div class="label">
     <div class="barcode" th:utext="${barcodeSvg}"></div>
-    <div class="barcode-text" th:text="${displayText}"></div>
+    <div class="barcode-text" th:utext="${displayText}"></div>
 </div>
 </body>
 </html>

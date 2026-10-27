@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Data Matrix Label</title>
+
+    <style>
+        @page {
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            color: #000;
+            background: #fff;
+        }
+
+        .label {
+            display: table;
+            border-collapse: separate;
+            border-spacing: 3mm 0;
+            padding: 0;
+            margin: 0;
+        }
+
+        .code-symbol,
+        .code-text {
+            display: table-cell;
+            vertical-align: middle;
+            padding: 0;
+            margin: 0;
+        }
+
+        .code-symbol {
+            white-space: nowrap;
+            line-height: 0;
+        }
+
+        .code-symbol svg {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: none;
+            max-height: none;
+        }
+
+        .code-text {
+            font-size: 8pt;
+            font-weight: bold;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .code-text p {
+            margin: 0 0 1.5mm 0;
+            padding: 0;
+        }
+
+        .code-text p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="label">
+
+    <!-- Data Matrix：左侧 -->
+    <div class="code-symbol"
+         th:utext="${barcodeSvg}">
+    </div>
+
+    <!-- GS1 数据：右侧 -->
+    <div class="code-text"
+         th:utext="${displayText}">
+    </div>
+
+</div>
+</body>
+</html>
