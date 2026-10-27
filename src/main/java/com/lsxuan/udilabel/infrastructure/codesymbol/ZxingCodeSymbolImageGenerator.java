@@ -16,8 +16,8 @@ import java.util.Objects;
 @Component("zxingCodeSymbolImageGenerator")
 public class ZxingCodeSymbolImageGenerator implements CodeSymbolImageGenerator {
 
-    private static final int BARCODE_WIDTH = 500;
-    private static final int BARCODE_HEIGHT = 150;
+    private static final int BARCODE_WIDTH = 1200;
+    private static final int BARCODE_HEIGHT = 100;
 
     private static final int QR_CODE_SIZE = 300;
     private static final int DATA_MATRIX_SIZE = 300;

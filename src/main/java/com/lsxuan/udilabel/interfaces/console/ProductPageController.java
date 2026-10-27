@@ -75,7 +75,10 @@ public class ProductPageController {
      */
     @GetMapping("/console/labels/{labelId}/preview")
     public ResponseEntity<byte[]> previewLabel(@PathVariable String labelId) {
-        byte[] pdfBytes = labelApplicationService.generatePdf();
+
+        String productId = "01a1585c-2780-7e76-929a-14edcc0cebc2";
+        String templateCode = "BARCODE_10_11_17";
+        byte[] pdfBytes = labelApplicationService.generatePdf(productId, templateCode);
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
             .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"product-label.pdf\"").body(pdfBytes);
@@ -86,7 +89,10 @@ public class ProductPageController {
      */
     @GetMapping("/console/labels/{labelId}/download")
     public ResponseEntity<byte[]> downloadLabel(@PathVariable String labelId) {
-        byte[] pdfBytes = labelApplicationService.generatePdf();
+
+        String productId = "01a1585c-2780-7e76-929a-14edcc0cebc2";
+        String templateCode = "BARCODE_10_11_17";
+        byte[] pdfBytes = labelApplicationService.generatePdf(productId, templateCode);
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
             .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"product-label.pdf\"").body(pdfBytes);

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>产品条码标签</title>
+
+    <style>
+        @page {
+            size: 210mm 30mm;
+            margin: 3mm;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .label {
+            width: 204mm;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .barcode {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .barcode svg {
+            display: block;
+            width: 100%;
+            height: 15mm;
+        }
+
+        .barcode-text {
+            margin: 1mm 0 0;
+            padding: 0;
+            font-size: 12pt;
+            line-height: 1.2;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="label">
+    <div class="barcode" th:utext="${barcodeSvg}"></div>
+    <div class="barcode-text" th:text="${displayText}"></div>
+</div>
+</body>
+</html>
