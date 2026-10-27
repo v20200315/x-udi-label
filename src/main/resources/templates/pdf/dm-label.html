@@ -1,88 +1,85 @@
 <!DOCTYPE html>
-<html lang="zh-CN"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Data Matrix Label</title>
-
+    <title>Barcode Label</title>
     <style>
         @page {
+            size: 380px 150px;
             margin: 0;
-        }
-
-        * {
-            box-sizing: border-box;
         }
 
         html,
         body {
+            width: 380px;
+            height: 150px;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+            background: #fff;
             font-family: Arial, sans-serif;
             color: #000;
-            background: #fff;
         }
 
-        .label {
-            display: table;
-            border-collapse: separate;
-            border-spacing: 3mm 0;
-            padding: 0;
+        .tbl {
+            width: 380px;
+            height: 150px;
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: none;
             margin: 0;
+            padding: 0;
         }
 
-        .code-symbol,
-        .code-text {
-            display: table-cell;
+        .tbl td {
+            border: none;
+            margin: 0;
+            padding: 0;
             vertical-align: middle;
-            padding: 0;
-            margin: 0;
         }
 
-        .code-symbol {
-            white-space: nowrap;
+        /* 左侧:Data Matrix,150x150 原尺寸,不缩放 */
+        .tbl td.col-code {
+            width: 150px;
+            height: 150px;
             line-height: 0;
+            font-size: 0;
         }
 
-        .code-symbol svg {
+        .tbl svg {
             display: block;
-            width: auto;
-            height: auto;
-            max-width: none;
-            max-height: none;
+            width: 150px;
+            height: 150px;
         }
 
-        .code-text {
-            font-size: 8pt;
+        /* 右侧:GS1 文字 */
+        .tbl td.col-text {
+            width: 230px;
+            height: 150px;
+            padding-left: 10px;
+            text-align: left;
+            font-size: 16px;
             font-weight: bold;
-            line-height: 1.2;
+            line-height: 20px;
             white-space: nowrap;
         }
 
-        .code-text p {
-            margin: 0 0 1.5mm 0;
+        .tbl td.col-text p {
+            margin: 0 0 6px 0;
             padding: 0;
         }
 
-        .code-text p:last-child {
+        .tbl td.col-text p:last-child {
             margin-bottom: 0;
         }
     </style>
 </head>
-
 <body>
-<div class="label">
-
-    <!-- Data Matrix：左侧 -->
-    <div class="code-symbol"
-         th:utext="${barcodeSvg}">
-    </div>
-
-    <!-- GS1 数据：右侧 -->
-    <div class="code-text"
-         th:utext="${displayText}">
-    </div>
-
-</div>
+<table class="tbl">
+    <tr>
+        <td class="col-code" th:utext="${barcodeSvg}"></td>
+        <td class="col-text" th:utext="${displayText}"></td>
+    </tr>
+</table>
 </body>
 </html>
