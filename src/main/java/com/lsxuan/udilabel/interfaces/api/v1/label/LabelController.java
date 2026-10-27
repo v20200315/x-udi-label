@@ -21,8 +21,8 @@ public class LabelController {
     @PostMapping(value = "/generate", produces = "image/svg+xml")
     public ResponseEntity<byte[]> generate(@Valid @ModelAttribute GenerateLabelPreviewRequest request) {
 
-        byte[] svg = labelApplicationService.generate(request.productId(), request.templateCode());
-
+        //        byte[] svg = labelApplicationService.generate(request.productId(), request.templateCode());
+        byte[] svg = null;
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("image/svg+xml;charset=UTF-8")).body(svg);
     }
 }

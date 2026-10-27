@@ -6,6 +6,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.lsxuan.udilabel.domain.label.CodeType;
+import com.lsxuan.udilabel.domain.label.LabelTemplate;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -25,42 +26,35 @@ public class ZxingCodeSymbolImageGenerator implements CodeSymbolImageGenerator {
     private static final int MARGIN = 2;
 
     @Override
-    public byte[] generate(CodeType codeType, String codeContent) {
-        Objects.requireNonNull(codeType, "codeType cannot be null.");
+    public byte[] generate(LabelTemplate labelTemplate, String codeContent) {
+        Objects.requireNonNull(labelTemplate, "labelTemplate cannot be null.");
 
         if (codeContent == null || codeContent.isBlank()) {
             throw new IllegalArgumentException("codeContent cannot be empty.");
         }
 
-        BarcodeFormat format = resolveFormat(codeType);
+        BarcodeFormat format = resolveFormat(labelTemplate.getCodeType());
 
         Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
 
         hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         hints.put(EncodeHintType.MARGIN, MARGIN);
 
-        if (codeType == CodeType.QR_CODE) {
+        if (labelTemplate.getCodeType() == CodeType.QR_CODE) {
             hints.put(EncodeHintType.ERROR_CORRECTION, com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.M);
         }
 
-        int width = switch (codeType) {
-            case CODE_128, GS1_128 -> BARCODE_WIDTH;
-            case QR_CODE -> QR_CODE_SIZE;
-            case GS1_DATA_MATRIX -> DATA_MATRIX_SIZE;
-        };
+        int width = labelTemplate.getWidth();
 
-        int height = switch (codeType) {
-            case CODE_128, GS1_128 -> BARCODE_HEIGHT;
-            case QR_CODE -> QR_CODE_SIZE;
-            case GS1_DATA_MATRIX -> DATA_MATRIX_SIZE;
-        };
+        int height = labelTemplate.getHeight();
 
         try {
             BitMatrix matrix = new MultiFormatWriter().encode(codeContent, format, width, height, hints);
             String svg = toSvg(matrix);
             return svg.getBytes(StandardCharsets.UTF_8);
         } catch (WriterException e) {
-            throw new CodeSymbolGenerationException("Failed to generate code symbol image. Type: " + codeType, e);
+            throw new CodeSymbolGenerationException(
+                "Failed to generate code symbol image. Type: " + labelTemplate.getTemplateCode(), e);
         }
     }
 

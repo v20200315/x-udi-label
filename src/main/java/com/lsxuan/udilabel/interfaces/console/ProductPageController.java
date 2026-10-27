@@ -56,16 +56,30 @@ public class ProductPageController {
         return "console/product-label";
     }
 
+//    @PostMapping("/console/labels/generate")
+//    public String generateLabel(@RequestParam UUID productId, @RequestParam String templateCode, Model model) {
+//
+//        // Mock：模拟标签生成成功
+//        String labelId = "mock-label-001";
+//
+//        model.addAttribute("labelId", labelId);
+//        model.addAttribute("fileName", "product-label.pdf");
+//        model.addAttribute("previewUrl", "/console/labels/" + labelId + "/preview");
+//        model.addAttribute("downloadUrl", "/console/labels/" + labelId + "/download");
+//
+//        return "console/label/fragments :: result";
+//    }
+
     @PostMapping("/console/labels/generate")
     public String generateLabel(@RequestParam UUID productId, @RequestParam String templateCode, Model model) {
 
-        // Mock：模拟标签生成成功
-        String labelId = "mock-label-001";
-
-        model.addAttribute("labelId", labelId);
         model.addAttribute("fileName", "product-label.pdf");
-        model.addAttribute("previewUrl", "/console/labels/" + labelId + "/preview");
-        model.addAttribute("downloadUrl", "/console/labels/" + labelId + "/download");
+
+        String queryParams = "?productId=" + productId + "&templateCode=" + templateCode;
+
+        model.addAttribute("previewUrl", "/console/labels/preview" + queryParams);
+
+        model.addAttribute("downloadUrl", "/console/labels/download" + queryParams);
 
         return "console/label/fragments :: result";
     }
@@ -73,11 +87,9 @@ public class ProductPageController {
     /**
      * 预览标签 PDF。
      */
-    @GetMapping("/console/labels/{labelId}/preview")
-    public ResponseEntity<byte[]> previewLabel(@PathVariable String labelId) {
+    @GetMapping("/console/labels/preview")
+    public ResponseEntity<byte[]> previewLabel(@RequestParam UUID productId, @RequestParam String templateCode) {
 
-        String productId = "01a1585c-2780-7e76-929a-14edcc0cebc2";
-        String templateCode = "BARCODE_10_11_17";
         byte[] pdfBytes = labelApplicationService.generatePdf(productId, templateCode);
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
@@ -87,11 +99,9 @@ public class ProductPageController {
     /**
      * 下载标签 PDF。
      */
-    @GetMapping("/console/labels/{labelId}/download")
-    public ResponseEntity<byte[]> downloadLabel(@PathVariable String labelId) {
+    @GetMapping("/console/labels/download")
+    public ResponseEntity<byte[]> downloadLabel(@RequestParam UUID productId, @RequestParam String templateCode) {
 
-        String productId = "01a1585c-2780-7e76-929a-14edcc0cebc2";
-        String templateCode = "BARCODE_10_11_17";
         byte[] pdfBytes = labelApplicationService.generatePdf(productId, templateCode);
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
