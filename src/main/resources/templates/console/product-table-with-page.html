@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{console/layout :: layout(~{::content}, ${pageTitle}, ${activePage})}">
+<body>
+<main th:fragment="content" class="page-body">
+    <div class="container-xl">
+        <div class="col-12">
+            <div class="card">
+
+                <!-- 页面标题 -->
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="card-title" th:text="${pageSubTitle}">产品列表</h2>
+
+                    <a class="btn btn-primary d-none d-sm-inline-block"
+                       th:href="@{/product/new}">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round"
+                             aria-hidden="true" class="icon">
+                            <path d="M12 5l0 14"/>
+                            <path d="M5 12l14 0"/>
+                        </svg>
+                        添加产品
+                    </a>
+                </div>
+
+                <!-- 每页条数 -->
+                <div class="card-body border-bottom py-3">
+                    <div class="d-flex align-items-center">
+                        <form method="get" th:action="@{/product}"
+                              class="d-flex align-items-center">
+                            <input type="hidden" name="pageNum" value="1"/>
+
+                            <label for="pageSize" class="text-secondary">
+                                每页显示
+                            </label>
+
+                            <div class="mx-2">
+                                <select id="pageSize"
+                                        name="pageSize"
+                                        class="form-select form-select-sm"
+                                        onchange="this.form.submit()">
+                                    <option value="1"
+                                            th:selected="${pageSize == 1}">1
+                                    </option>
+                                    <option value="10"
+                                            th:selected="${pageSize == 10}">10
+                                    </option>
+                                    <option value="20"
+                                            th:selected="${pageSize == 20}">20
+                                    </option>
+                                    <option value="50"
+                                            th:selected="${pageSize == 50}">50
+                                    </option>
+                                    <option value="100"
+                                            th:selected="${pageSize == 100}">100
+                                    </option>
+                                </select>
+                            </div>
+
+                            <span class="text-secondary">条</span>
+                        </form>
+
+                        <!-- 搜索功能暂未实现 -->
+                        <div class="ms-auto text-secondary">
+                            搜索：
+                            <div class="ms-2 d-inline-block">
+                                <input type="search"
+                                       class="form-control form-control-sm"
+                                       placeholder="暂未启用"
+                                       aria-label="搜索产品"
+                                       disabled/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 产品列表 -->
+                <div class="table-responsive">
+                    <table class="table table-selectable card-table table-vcenter text-nowrap">
+                        <thead>
+                        <tr>
+                            <th class="w-1 text-center">序号</th>
+                            <th>GTIN / DI</th>
+                            <th>批号</th>
+                            <th>产品名称</th>
+                            <th>产品规格</th>
+                            <th>产品型号</th>
+                            <th>生产日期</th>
+                            <th>有效期至</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <!-- 当前页存在产品 -->
+                        <tr th:each="product, stat : ${products}">
+                            <td class="text-center">
+                                <span class="text-secondary"
+                                      th:text="${(pageNum - 1) * pageSize + stat.count}">
+                                    1
+                                </span>
+                            </td>
+
+                            <td th:text="${product.indicatorDigit
+                                + product.companyPrefix
+                                + product.itemReference
+                                + product.checkDigit}">
+                            </td>
+
+                            <td>
+                                <div class="text-truncate"
+                                     style="max-width: 10em;"
+                                     th:title="${product.lotNumber}"
+                                     th:text="${product.lotNumber}">
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="text-truncate"
+                                     style="max-width: 10em;"
+                                     th:title="${product.name}"
+                                     th:text="${product.name}">
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="text-truncate"
+                                     style="max-width: 10em;"
+                                     th:title="${product.specification}"
+                                     th:text="${product.specification}">
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="text-truncate"
+                                     style="max-width: 10em;"
+                                     th:title="${product.model}"
+                                     th:text="${product.model}">
+                                </div>
+                            </td>
+
+                            <td th:text="${product.productionDate != null
+                                ? #temporals.format(product.productionDate, 'yyyy-MM-dd')
+                                : '-'}">
+                            </td>
+
+                            <td th:text="${product.expirationDate != null
+                                ? #temporals.format(product.expirationDate, 'yyyy-MM-dd')
+                                : '-'}">
+                            </td>
+
+                            <!-- 行操作 -->
+                            <td class="text-end">
+                                <div class="dropdown">
+                                    <button type="button"
+                                            class="btn dropdown-toggle align-text-top"
+                                            data-bs-toggle="dropdown"
+                                            data-bs-popper-config='{"strategy":"fixed"}'>
+                                        操作
+                                    </button>
+
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item"
+                                           th:href="@{/product/{id}/edit(id=${product.id})}">
+                                            编辑产品
+                                        </a>
+
+                                        <a class="dropdown-item"
+                                           th:href="@{/product/{id}/label/generate(id=${product.id})}">
+                                            生成标签
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- 当前页没有产品 -->
+                        <tr th:if="${#lists.isEmpty(products)}">
+                            <td colspan="9" class="text-center text-secondary py-4">
+                                暂无产品数据
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分页 -->
+                <div class="card-footer">
+                    <div class="row g-2 justify-content-center justify-content-sm-between">
+
+                        <!-- 数据范围 -->
+                        <div class="col-auto d-flex align-items-center">
+                            <p class="m-0 text-secondary">
+                                显示
+                                <strong th:text="${total == 0
+                                    ? 0
+                                    : (pageNum - 1) * pageSize + 1}">1</strong>
+                                至
+                                <strong th:text="${(pageNum * pageSize) < total
+                                    ? pageNum * pageSize
+                                    : total}">10</strong>
+                                条，共
+                                <strong th:text="${total}">0</strong>
+                                条
+                            </p>
+                        </div>
+
+                        <!-- 页码导航 -->
+                        <div class="col-auto">
+                            <nav aria-label="产品列表分页">
+                                <ul class="pagination m-0 ms-auto">
+
+                                    <!-- 上一页 -->
+                                    <li class="page-item"
+                                        th:classappend="${pageNum <= 1} ? 'disabled' : ''">
+                                        <a class="page-link"
+                                           th:if="${pageNum > 1}"
+                                           th:href="@{/product(pageNum=${pageNum - 1}, pageSize=${pageSize})}"
+                                           aria-label="上一页">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="24" height="24"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none" stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round"
+                                                 stroke-linejoin="round"
+                                                 aria-hidden="true" class="icon">
+                                                <path d="M15 6l-6 6l6 6"/>
+                                            </svg>
+                                        </a>
+                                        <span class="page-link"
+                                              th:if="${pageNum <= 1}"
+                                              aria-disabled="true"
+                                              aria-label="上一页">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="24" height="24"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none" stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round"
+                                                 stroke-linejoin="round"
+                                                 aria-hidden="true" class="icon">
+                                                <path d="M15 6l-6 6l6 6"/>
+                                            </svg>
+                                        </span>
+                                    </li>
+
+                                    <!-- 页码：仅在有数据页时显示 -->
+                                    <th:block th:if="${totalPages > 0}">
+                                        <li class="page-item"
+                                            th:each="p : ${#numbers.sequence(1, totalPages)}"
+                                            th:classappend="${p == pageNum} ? 'active' : ''">
+                                            <a class="page-link"
+                                               th:href="@{/product(pageNum=${p}, pageSize=${pageSize})}"
+                                               th:attr="aria-label=|第 ${p} 页|,
+                                                        aria-current=${p == pageNum ? 'page' : null}"
+                                               th:text="${p}">
+                                                1
+                                            </a>
+                                        </li>
+                                    </th:block>
+
+                                    <!-- 下一页 -->
+                                    <li class="page-item"
+                                        th:classappend="${pageNum >= totalPages} ? 'disabled' : ''">
+                                        <a class="page-link"
+                                           th:if="${pageNum < totalPages}"
+                                           th:href="@{/product(pageNum=${pageNum + 1}, pageSize=${pageSize})}"
+                                           aria-label="下一页">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="24" height="24"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none" stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round"
+                                                 stroke-linejoin="round"
+                                                 aria-hidden="true" class="icon">
+                                                <path d="M9 6l6 6l-6 6"/>
+                                            </svg>
+                                        </a>
+                                        <span class="page-link"
+                                              th:if="${pageNum >= totalPages}"
+                                              aria-disabled="true"
+                                              aria-label="下一页">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="24" height="24"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none" stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round"
+                                                 stroke-linejoin="round"
+                                                 aria-hidden="true" class="icon">
+                                                <path d="M9 6l6 6l-6 6"/>
+                                            </svg>
+                                        </span>
+                                    </li>
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

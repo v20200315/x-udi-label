@@ -1,6 +1,9 @@
 package com.lsxuan.udilabel.interfaces.console;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lsxuan.udilabel.application.label.LabelApplicationService;
+import com.lsxuan.udilabel.application.product.ProductApplicationService;
+import com.lsxuan.udilabel.interfaces.api.v1.product.dto.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ContentDisposition;
@@ -21,14 +24,38 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductPageController {
 
+    private final ProductApplicationService productApplicationService;
     private final LabelApplicationService labelApplicationService;
 
     @GetMapping("/product")
     public String productListPage(Model model) {
 
         setPageMetadata(model, "产品列表");
-        // TODO 查询产品列表并放入 Model。
+
+        model.addAttribute("products", productApplicationService.findAll());
+
         return "console/product";
+    }
+
+    @GetMapping("/product-table-with-page")
+    public String productListPage2(@RequestParam(defaultValue = "1") int pageNum,
+        @RequestParam(defaultValue = "10") int pageSize, Model model) {
+
+        pageNum = Math.max(pageNum, 1);
+        pageSize = Math.clamp(pageSize, 1, 100);
+
+        IPage<ProductResponse> page = productApplicationService.findPage(pageNum, pageSize);
+
+        setPageMetadata(model, "产品列表");
+
+        model.addAttribute("products", page.getRecords());
+
+        model.addAttribute("pageNum", page.getCurrent());
+        model.addAttribute("pageSize", page.getSize());
+        model.addAttribute("total", page.getTotal());
+        model.addAttribute("totalPages", page.getPages());
+
+        return "console/product-table-with-page";
     }
 
     @GetMapping("/product/new")
@@ -82,9 +109,8 @@ public class ProductPageController {
 
         byte[] pdfBytes = labelApplicationService.generatePdf(productId, templateCode);
         String fileName = "product-label-" + System.currentTimeMillis() + ".pdf";
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
-            .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename(fileName).build().toString())
-            .body(pdfBytes);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).header(HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment().filename(fileName).build().toString()).body(pdfBytes);
     }
 
     @GetMapping("/product/{productId}/labels/download.svg")

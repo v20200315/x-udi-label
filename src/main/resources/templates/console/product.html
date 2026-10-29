@@ -6,44 +6,37 @@
     <div class="container-xl">
         <div class="col-12">
             <div class="card">
+
+                <!-- 页面标题 -->
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h2 class="card-title" th:text="${pageSubTitle}"></h2>
-                    <a class="btn btn-primary d-none d-sm-inline-block" th:href="@{/product/new}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             aria-hidden="true" focusable="false" class="icon">
+                    <h2 class="card-title" th:text="${pageSubTitle}">产品列表</h2>
+
+                    <a class="btn btn-primary d-none d-sm-inline-block"
+                       th:href="@{/product/new}">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             aria-hidden="true"
+                             focusable="false"
+                             class="icon">
                             <path d="M12 5l0 14"/>
                             <path d="M5 12l14 0"/>
                         </svg>
                         添加产品
                     </a>
                 </div>
-                <div class="card-body border-bottom py-3">
-                    <div class="d-flex">
-                        <div class="text-secondary">
-                            Show
-                            <div class="mx-2 d-inline-block">
-                                <input type="text" class="form-control form-control-sm" value="8" size="3"
-                                       aria-label="Invoices count"/>
-                            </div>
-                            entries
-                        </div>
 
-                        <div class="ms-auto text-secondary">
-                            Search:
-                            <div class="ms-2 d-inline-block">
-                                <input type="text" class="form-control form-control-sm" aria-label="Search invoice"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- 产品列表 -->
                 <div class="table-responsive">
-                    <table class="table table-selectable card-table table-vcenter text-nowrap datatable">
+                    <table class="table table-selectable card-table table-vcenter text-nowrap">
                         <thead>
                         <tr>
-                            <th class="w-1 text-center">
-                                序号
-                            </th>
+                            <th class="w-1 text-center">序号</th>
                             <th>GTIN / DI</th>
                             <th>批号</th>
                             <th>产品名称</th>
@@ -56,148 +49,110 @@
                         </thead>
 
                         <tbody>
-                        <tr>
+                        <!-- 产品数据 -->
+                        <tr th:each="product, stat : ${products}">
                             <td class="text-center">
-                                <span class="text-secondary">1</span>
+                                <span class="text-secondary"
+                                      th:text="${stat.count}">1</span>
                             </td>
-                            <td>06979510980000</td>
-                            <td>ABC1234</td>
-                            <td>一次性丁腈手套2</td>
-                            <td>规格2</td>
-                            <td>型号2</td>
-                            <td>2026-10-02</td>
-                            <td>2031-09-20</td>
+
+                            <td th:text="${product.indicatorDigit
+                                + product.companyPrefix
+                                + product.itemReference
+                                + product.checkDigit}">
+                            </td>
+
+                            <td>
+                                <div class="text-truncate"
+                                     style="max-width: 10em;"
+                                     th:title="${product.lotNumber}"
+                                     th:text="${product.lotNumber != null
+                                         ? product.lotNumber : '-'}">
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="text-truncate"
+                                     style="max-width: 10em;"
+                                     th:title="${product.name}"
+                                     th:text="${product.name}">
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="text-truncate"
+                                     style="max-width: 10em;"
+                                     th:title="${product.specification}"
+                                     th:text="${product.specification != null
+                                         ? product.specification : '-'}">
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="text-truncate"
+                                     style="max-width: 10em;"
+                                     th:title="${product.model}"
+                                     th:text="${product.model != null
+                                         ? product.model : '-'}">
+                                </div>
+                            </td>
+
+                            <td th:text="${product.productionDate != null
+                                ? #temporals.format(product.productionDate, 'yyyy-MM-dd')
+                                : '-'}">
+                            </td>
+
+                            <td th:text="${product.expirationDate != null
+                                ? #temporals.format(product.expirationDate, 'yyyy-MM-dd')
+                                : '-'}">
+                            </td>
+
+                            <!-- 操作菜单 -->
                             <td class="text-end">
                                 <div class="dropdown">
-                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-popper-config='{"strategy":"fixed"}'>Actions
+                                    <button type="button"
+                                            class="btn dropdown-toggle align-text-top"
+                                            data-bs-toggle="dropdown"
+                                            data-bs-popper-config='{"strategy":"fixed"}'>
+                                        操作
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        <!--                                        <button type="button" class="dropdown-item"-->
-                                        <!--                                                th:onclick="|window.location.href='@{/product/{id}/edit(id=${product.id})}'|">-->
-                                        <!--                                            Action-->
-                                        <!--                                        </button>-->
-                                        <button type="button"
-                                                class="dropdown-item"
-                                                onclick="window.location.href='/product/01a1585c-2780-7e76-929a-14edcc0cebc2/edit'">
+                                        <a class="dropdown-item"
+                                           th:href="@{/product/{id}/edit(id=${product.id})}">
                                             编辑产品
-                                        </button>
-                                        <button type="button"
-                                                class="dropdown-item"
-                                                onclick="window.location.href='/product/01a1585c-2780-7e76-929a-14edcc0cebc2/label/generate'">
+                                        </a>
+
+                                        <a class="dropdown-item"
+                                           th:href="@{/product/{id}/label/generate(id=${product.id})}">
                                             生成标签
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td class="text-center">
-                                <span class="text-secondary">2</span>
-                            </td>
-                            <td>06979510980001</td>
-                            <td>
-                                <div class="text-truncate" style="max-width: 10em;" title="ABC1234">
-                                    ABC1234
-                                </div>
-                            </td>
-                            <td>
-                                <div class="text-truncate" style="max-width: 10em;" title="一次性丁腈手套">
-                                    一次性丁腈手套
-                                </div>
-                            </td>
-                            <td>
-                                <div class="text-truncate" style="max-width: 10em;"
-                                     title="规格2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2">
-                                    规格2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2
-                                </div>
-                            </td>
-                            <td>
-                                <div class="text-truncate" style="max-width: 10em;"
-                                     title="型号2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2">
-                                    型号2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2
-                                </div>
-                            </td>
-                            <td>2026-10-02</td>
-                            <td>2031-09-20</td>
-                            <td class="text-end">
-                                <div class="dropdown">
-                                    <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown"
-                                            data-bs-popper-config='{"strategy":"fixed"}'>Actions
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <!--                                        <button type="button" class="dropdown-item"-->
-                                        <!--                                                th:onclick="|window.location.href='@{/product/{id}/edit(id=${product.id})}'|">-->
-                                        <!--                                            Action-->
-                                        <!--                                        </button>-->
-                                        <button type="button"
-                                                class="dropdown-item"
-                                                onclick="window.location.href='/product/01a1585c-2780-7e76-929a-14edcc0cebc2/edit'">
-                                            编辑产品
-                                        </button>
-                                        <button type="button" class="dropdown-item">Another action</button>
-                                    </div>
-                                </div>
+
+                        <!-- 空数据提示 -->
+                        <tr th:if="${#lists.isEmpty(products)}">
+                            <td colspan="9"
+                                class="text-center text-secondary py-4">
+                                暂无产品数据
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer">
-                    <div class="row g-2 justify-content-center justify-content-sm-between">
-                        <div class="col-auto d-flex align-items-center">
-                            <p class="m-0 text-secondary">Showing <strong>1 to 8</strong> of <strong>16 entries</strong>
-                            </p>
-                        </div>
-                        <div class="col-auto">
-                            <!-- BEGIN PAGINATION -->
-                            <nav aria-label="Pagination">
-                                <ul class="pagination m-0 ms-auto">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
-                                           aria-label="Previous page">
-                                            <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-left -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                                                 focusable="false" class="icon">
-                                                <path d="M15 6l-6 6l6 6"/>
-                                            </svg>
-                                        </a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Page 1"> 1 </a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Page 2"> 2 </a>
-                                    </li>
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#" aria-label="Page 3" aria-current="page"> 3 </a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Page 4"> 4 </a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Page 5"> 5 </a>
-                                    </li>
 
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next page">
-                                            <!-- Download SVG icon from http://tabler.io/icons/icon/chevron-right -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                                                 focusable="false" class="icon">
-                                                <path d="M9 6l6 6l-6 6"/>
-                                            </svg>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <!-- END PAGINATION -->
+                <!-- 底部信息 -->
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <div class="text-secondary">
+                            共
+                            <strong th:text="${#lists.size(products)}">0</strong>
+                            个产品
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

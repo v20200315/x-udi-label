@@ -1,6 +1,8 @@
 package com.lsxuan.udilabel.infrastructure.persistence.product;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lsxuan.udilabel.domain.product.Product;
 import com.lsxuan.udilabel.domain.product.ProductRepository;
 import org.springframework.stereotype.Repository;
@@ -52,6 +54,17 @@ public class ProductRepositoryImpl implements ProductRepository {
     public void delete(UUID id) {
 
         mapper.delete(new LambdaQueryWrapper<ProductDO>().eq(ProductDO::getId, id));
+    }
+
+    @Override
+    public IPage<Product> findPage(int pageNum, int pageSize) {
+
+        LambdaQueryWrapper<ProductDO> qw = new LambdaQueryWrapper<>();
+        qw.orderByDesc(ProductDO::getUpdatedAt);
+
+        Page<ProductDO> page = new Page<>(pageNum, pageSize);
+        IPage<ProductDO> iPage = mapper.selectPage(page, qw);
+        return iPage.convert(this::toDomain);
     }
 
     private ProductDO toDO(Product product) {

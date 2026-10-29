@@ -1,5 +1,6 @@
 package com.lsxuan.udilabel.application.product;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lsxuan.udilabel.domain.product.Product;
 import com.lsxuan.udilabel.domain.product.ProductRepository;
 import com.lsxuan.udilabel.infrastructure.security.CurrentUserContext;
@@ -78,5 +79,10 @@ public class ProductApplicationService {
         productRepository.update(product);
     }
 
+    @Transactional(readOnly = true)
+    public IPage<ProductResponse> findPage(int pageNum, int pageSize) {
+
+        return productRepository.findPage(pageNum, pageSize).convert(ProductResponse::from);
+    }
 }
 
