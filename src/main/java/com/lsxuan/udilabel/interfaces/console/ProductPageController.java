@@ -3,7 +3,9 @@ package com.lsxuan.udilabel.interfaces.console;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lsxuan.udilabel.application.label.LabelApplicationService;
 import com.lsxuan.udilabel.application.product.ProductApplicationService;
+import com.lsxuan.udilabel.interfaces.api.v1.product.dto.CreateProductRequest;
 import com.lsxuan.udilabel.interfaces.api.v1.product.dto.ProductResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ContentDisposition;
@@ -12,10 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.UUID;
 
@@ -62,8 +63,37 @@ public class ProductPageController {
     public String newProductPage(Model model) {
 
         setPageMetadata(model, "添加产品");
-        // TODO 初始化空的产品表单对象。
+
+        model.addAttribute("createProductRequest",
+            new CreateProductRequest(null, null, null, null, null, null, null, null, null));
+
         return "console/product-form";
+    }
+
+    @PostMapping("/product/new")
+    public String createProduct(@Valid @ModelAttribute("createProductRequest") CreateProductRequest request,
+        BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasFieldErrors("validItemReferenceLength")) {
+            bindingResult.rejectValue("itemReference", "itemReference.length.invalid",
+                "商品项目代码的位数与厂商识别码的位数之和应为12");
+        }
+
+        if (bindingResult.hasFieldErrors("validDateRange")) {
+            bindingResult.rejectValue("expirationDate", "expirationDate.invalid", "有效期截止日期不能早于生产日期");
+        }
+
+        if (bindingResult.hasErrors()) {
+            setPageMetadata(model, "新增产品");
+            model.addAttribute("pageSubTitle", "新增产品");
+            return "console/product-form";
+        }
+
+        productApplicationService.create(request);
+
+        redirectAttributes.addFlashAttribute("successMessage", "产品创建成功");
+
+        return "redirect:/product";
     }
 
     @GetMapping("/product/{productId}/edit")

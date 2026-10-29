@@ -5,7 +5,7 @@
 <main th:fragment="content" class="page-body">
     <div class="container-xl">
         <div class="col-12">
-            <form action="" method="post" class="card">
+            <form th:action="@{/product/new}" th:object="${createProductRequest}" method="post" class="card">
                 <div class="card-header">
                     <h2 class="card-title" th:text="${pageSubTitle}"></h2>
                 </div>
@@ -13,32 +13,130 @@
                     <div class="row">
                         <div class="col-12 col-md-2 offset-md-3 mb-3">
                             <label class="form-label required" for="indicatorDigit">包装指示符</label>
-                            <select class="form-select" id="indicatorDigit" name="indicatorDigit" required>
+                            <select class="form-select" id="indicatorDigit" name="indicatorDigit"
+                                    th:field="*{indicatorDigit}"
+                                    th:classappend="${#fields.hasErrors('indicatorDigit')} ? 'is-invalid' : ''">
                                 <option value="" disabled selected>请选择</option>
                                 <option value="0">0 - 单品</option>
                             </select>
+                            <div class="invalid-feedback" th:errors="*{indicatorDigit}"></div>
                         </div>
-                    </div><div class="row">
+                    </div>
+                    <div class="row">
                         <div class="col-12 col-md-6 offset-md-3 mb-3">
                             <label class="form-label required" for="companyPrefix">
                                 厂商识别码
                             </label>
                             <input type="text" class="form-control" id="companyPrefix" name="companyPrefix"
-                                   autocomplete="companyPrefix" aria-required="true"/>
+                                   placeholder="厂商识别码" th:field="*{companyPrefix}"
+                                   th:classappend="${#fields.hasErrors('companyPrefix')} ? 'is-invalid' : ''"
+                                   autocomplete="off"/>
+                            <div class="invalid-feedback" th:errors="*{companyPrefix}"></div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-6 offset-md-3 mb-3">
-                            <label class="form-label" for="signup-phone">Phone</label>
-                            <input type="tel" class="form-control" id="signup-phone" name="phone"
-                                   placeholder="Enter phone" autocomplete="tel" required>
+                            <label class="form-label required" for="itemReference">
+                                商品项目代码
+                            </label>
+                            <input type="text" class="form-control" id="itemReference" name="itemReference"
+                                   placeholder="商品项目代码" th:field="*{itemReference}"
+                                   th:classappend="${#fields.hasErrors('itemReference')} ? 'is-invalid' : ''"
+                                   autocomplete="off"/>
+                            <div class="invalid-feedback" th:errors="*{itemReference}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 offset-md-3 mb-3">
+                            <label class="form-label required" for="lotNumber">
+                                批号
+                            </label>
+                            <input type="text" class="form-control" id="lotNumber" name="lotNumber" placeholder="批号"
+                                   th:field="*{lotNumber}"
+                                   th:classappend="${#fields.hasErrors('lotNumber')} ? 'is-invalid' : ''"
+                                   autocomplete="off"/>
+                            <div class="invalid-feedback" th:errors="*{lotNumber}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 offset-md-3 mb-3">
+                            <label class="form-label required" for="name">产品名称</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="产品名称"
+                                   th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                   autocomplete="off"/>
+                            <div class="invalid-feedback" th:errors="*{name}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 offset-md-3 mb-3">
+                            <label class="form-label required" for="specification">产品规格</label>
+                            <textarea class="form-control" id="specification" name="specification" rows="3"
+                                      placeholder="产品规格" th:field="*{specification}"
+                                      th:classappend="${#fields.hasErrors('specification')} ? 'is-invalid' : ''"
+                                      autocomplete="off"></textarea>
+                            <div class="invalid-feedback" th:errors="*{specification}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 offset-md-3 mb-3">
+                            <label class="form-label required" for="model">产品型号</label>
+                            <textarea class="form-control" id="model" name="model" rows="3" placeholder="产品型号"
+                                      th:field="*{model}"
+                                      th:classappend="${#fields.hasErrors('model')} ? 'is-invalid' : ''"
+                                      autocomplete="off"></textarea>
+                            <div class="invalid-feedback" th:errors="*{model}"></div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-3 offset-md-3 mb-3">
-                            <label class="form-label" for="signup-age">Age</label>
-                            <input type="number" class="form-control" id="signup-age" name="age" placeholder="Enter age"
-                                   required>
+                            <label class="form-label required" for="productionDate">生成日期</label>
+                            <div class="input-icon">
+                                <span class="input-icon-addon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         aria-hidden="true" focusable="false" class="icon">
+                                        <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12"/>
+                                        <path d="M16 3v4"/>
+                                        <path d="M8 3v4"/>
+                                        <path d="M4 11h16"/>
+                                        <path d="M11 15h1"/>
+                                        <path d="M12 15v3"/>
+                                    </svg>
+                                </span>
+                                <input type="text" class="form-control" id="productionDate" placeholder="生成日期"
+                                       th:field="*{productionDate}"
+                                       th:classappend="${#fields.hasErrors('productionDate')} ? 'is-invalid' : ''"
+                                       autocomplete="off" readonly/>
+                                <div class="invalid-feedback" th:errors="*{productionDate}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-3 offset-md-3 mb-3">
+                            <label class="form-label required" for="expirationDate">有效期至</label>
+                            <div class="input-icon">
+                                <span class="input-icon-addon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         aria-hidden="true" focusable="false" class="icon">
+                                        <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12"/>
+                                        <path d="M16 3v4"/>
+                                        <path d="M8 3v4"/>
+                                        <path d="M4 11h16"/>
+                                        <path d="M11 15h1"/>
+                                        <path d="M12 15v3"/>
+                                    </svg>
+                                </span>
+                                <input type="text" class="form-control" id="expirationDate" placeholder="有效期至"
+                                       th:field="*{expirationDate}"
+                                       th:classappend="${#fields.hasErrors('expirationDate')} ? 'is-invalid' : ''"
+                                       autocomplete="off" readonly/>
+                                <div class="invalid-feedback" th:errors="*{expirationDate}"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -48,21 +146,39 @@
                     </div>
                 </div>
             </form>
-
-            <!--            <form method="post" th:action="${formAction}" th:object="${productForm}">-->
-            <!--                &lt;!&ndash; Shared fields &ndash;&gt;-->
-            <!--                <a class="btn btn-primary d-none d-sm-inline-block" th:href="@{/product}">-->
-            <!--                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"-->
-            <!--                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"-->
-            <!--                         aria-hidden="true" focusable="false" class="icon">-->
-            <!--                        <path d="M12 5l0 14"/>-->
-            <!--                        <path d="M5 12l14 0"/>-->
-            <!--                    </svg>-->
-            <!--                    返回-->
-            <!--                </a>-->
-            <!--            </form>-->
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!window.VanillaCalendarPro) {
+                console.error("vanilla-calendar-pro 未加载");
+                return;
+            }
+            const {Calendar} = window.VanillaCalendarPro;
+
+            function initDatePicker(selector) {
+                const input = document.querySelector(selector);
+                if (!input) return;
+
+                const calendar = new Calendar(input, {
+                    inputMode: true,
+                    locale: "zh-CN",
+                    selectionDatesMode: "single",
+                    positionToInput: "auto",
+                    onChangeToInput(self) {
+                        if (!self.context.inputElement) return;
+                        const date = self.context.selectedDates[0];
+                        self.context.inputElement.value = date ?? "";
+                        if (date) self.hide();
+                    }
+                });
+                calendar.init();
+            }
+
+            initDatePicker("#productionDate");
+            initDatePicker("#expirationDate");
+        });
+    </script>
 </main>
 </body>
 </html>
