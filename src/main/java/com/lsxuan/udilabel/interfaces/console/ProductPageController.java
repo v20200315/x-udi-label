@@ -5,6 +5,7 @@ import com.lsxuan.udilabel.application.label.LabelApplicationService;
 import com.lsxuan.udilabel.application.product.ProductApplicationService;
 import com.lsxuan.udilabel.interfaces.api.v1.product.dto.CreateProductRequest;
 import com.lsxuan.udilabel.interfaces.api.v1.product.dto.ProductResponse;
+import com.lsxuan.udilabel.interfaces.api.v1.product.dto.UpdateProductRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,17 +63,17 @@ public class ProductPageController {
     @GetMapping("/product/new")
     public String newProductPage(Model model) {
 
-        setPageMetadata(model, "添加产品");
-
-        model.addAttribute("createProductRequest",
-            new CreateProductRequest(null, null, null, null, null, null, null, null, null));
+        setPageMetadata(model, "新增产品");
+        model.addAttribute("formAction", "/product/new");
+        model.addAttribute("submitLabel", "新增产品");
+        model.addAttribute("productForm", ProductForm.empty());
 
         return "console/product-form";
     }
 
     @PostMapping("/product/new")
-    public String createProduct(@Valid @ModelAttribute("createProductRequest") CreateProductRequest request,
-        BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+    public String createProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult bindingResult,
+        Model model, RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasFieldErrors("validItemReferenceLength")) {
             bindingResult.rejectValue("itemReference", "itemReference.length.invalid",
@@ -85,10 +86,12 @@ public class ProductPageController {
 
         if (bindingResult.hasErrors()) {
             setPageMetadata(model, "新增产品");
-            model.addAttribute("pageSubTitle", "新增产品");
+            model.addAttribute("formAction", "/product/new");
+            model.addAttribute("submitLabel", "新增产品");
             return "console/product-form";
         }
 
+        CreateProductRequest request = toCreateProductRequest(form);
         productApplicationService.create(request);
 
         redirectAttributes.addFlashAttribute("successMessage", "产品创建成功");
@@ -99,18 +102,54 @@ public class ProductPageController {
     @GetMapping("/product/{productId}/edit")
     public String editProductPage(@PathVariable UUID productId, Model model) {
 
+        ProductResponse response = productApplicationService.findById(productId);
+
         setPageMetadata(model, "编辑产品");
-        model.addAttribute("productId", productId);
-        // TODO 根据 id 查询产品，并放入 Model。
+        model.addAttribute("formAction", "/product/" + productId + "/edit");
+        model.addAttribute("submitLabel", "保存修改");
+        model.addAttribute("productForm", toProductForm(response));
+
         return "console/product-form";
+    }
+
+    @PostMapping("/product/{productId}/edit")
+    public String updateProduct(@PathVariable UUID productId,
+        @Valid @ModelAttribute("productForm") ProductForm productForm, BindingResult bindingResult, Model model,
+        RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasFieldErrors("validItemReferenceLength")) {
+            bindingResult.rejectValue("itemReference", "itemReference.length.invalid",
+                "商品项目代码的位数与厂商识别码的位数之和应为12");
+        }
+
+        if (bindingResult.hasFieldErrors("validDateRange")) {
+            bindingResult.rejectValue("expirationDate", "expirationDate.invalid", "有效期截止日期不能早于生产日期");
+        }
+
+        if (bindingResult.hasErrors()) {
+            setPageMetadata(model, "编辑产品");
+            model.addAttribute("formAction", "/product/" + productId + "/edit");
+            model.addAttribute("submitLabel", "保存修改");
+            return "console/product-form";
+        }
+
+        UpdateProductRequest request = toUpdateProductRequest(productForm);
+        productApplicationService.update(productId, request);
+
+        redirectAttributes.addFlashAttribute("successMessage", "产品修改成功");
+
+        return "redirect:/product";
     }
 
     @GetMapping("/product/{productId}/label/generate")
     public String generateLabelPage(@PathVariable UUID productId, Model model) {
 
+        ProductResponse response = productApplicationService.findById(productId);
+
         setPageMetadata(model, "生成标签");
         model.addAttribute("productId", productId);
-        // TODO 根据 id 查询产品，并放入 Model。
+        model.addAttribute("productForm", toProductForm(response));
+
         return "console/product-label";
     }
 
@@ -158,5 +197,35 @@ public class ProductPageController {
         model.addAttribute("pageTitle", "产品管理");
         model.addAttribute("pageSubTitle", pageSubTitle);
         model.addAttribute("activePage", "product");
+    }
+
+    private CreateProductRequest toCreateProductRequest(ProductForm form) {
+
+        return new CreateProductRequest(form.getIndicatorDigit(), form.getCompanyPrefix(), form.getItemReference(),
+            form.getLotNumber(), form.getName(), form.getSpecification(), form.getModel(), form.getProductionDate(),
+            form.getExpirationDate());
+    }
+
+    private UpdateProductRequest toUpdateProductRequest(ProductForm form) {
+
+        return new UpdateProductRequest(form.getIndicatorDigit(), form.getCompanyPrefix(), form.getItemReference(),
+            form.getLotNumber(), form.getName(), form.getSpecification(), form.getModel(), form.getProductionDate(),
+            form.getExpirationDate());
+    }
+
+    private ProductForm toProductForm(ProductResponse response) {
+
+        ProductForm form = new ProductForm();
+        form.setIndicatorDigit(response.indicatorDigit());
+        form.setCompanyPrefix(response.companyPrefix());
+        form.setItemReference(response.itemReference());
+        form.setCheckDigit(response.checkDigit());
+        form.setLotNumber(response.lotNumber());
+        form.setName(response.name());
+        form.setSpecification(response.specification());
+        form.setModel(response.model());
+        form.setProductionDate(response.productionDate());
+        form.setExpirationDate(response.expirationDate());
+        return form;
     }
 }

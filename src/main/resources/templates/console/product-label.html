@@ -30,15 +30,16 @@
                                     </svg>
                                 </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" th:object="${productForm}">
                                 <h2 class="card-title">商品信息</h2>
-                                <p class="text-secondary">06979510980000</p>
-                                <p class="text-secondary">ABC1234</p>
-                                <p class="text-secondary">一次性丁腈手套</p>
-                                <p class="text-secondary">
-                                    规格2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2</p>
-                                <p class="text-secondary">
-                                    型号2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2一次性丁腈手套2</p>
+                                <p class="text-secondary"
+                                   th:text="*{indicatorDigit + companyPrefix + itemReference + checkDigit}"></p>
+                                <p class="text-secondary" th:text="*{lotNumber}"></p>
+                                <p class="text-secondary" th:text="*{name}"></p>
+                                <p class="text-secondary" th:if="*{specification != null and !specification.isEmpty()}"
+                                   th:text="*{specification}"></p>
+                                <p class="text-secondary" th:if="*{model != null and !model.isEmpty()}"
+                                   th:text="*{model}"></p>
                             </div>
                         </div>
                     </div>

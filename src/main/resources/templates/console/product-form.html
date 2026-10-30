@@ -5,7 +5,7 @@
 <main th:fragment="content" class="page-body">
     <div class="container-xl">
         <div class="col-12">
-            <form th:action="@{/product/new}" th:object="${createProductRequest}" method="post" class="card">
+            <form th:action="${formAction}" th:object="${productForm}" method="post" class="card">
                 <div class="card-header">
                     <h2 class="card-title" th:text="${pageSubTitle}"></h2>
                 </div>
@@ -142,7 +142,8 @@
                 </div>
                 <div class="card-footer">
                     <div class="text-end">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" th:text="${submitLabel}"></button>
+                        <a th:href="@{/product}" class="btn btn-outline-secondary">取消</a>
                     </div>
                 </div>
             </form>

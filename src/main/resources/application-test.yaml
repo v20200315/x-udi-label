@@ -2,11 +2,24 @@ server:
   port: 8083
 
 spring:
-  config:
-    import: optional:nacos:x-udi-label-test.yml
   cloud:
     nacos:
-      server-addr: localhost:8848
       config:
-        namespace: fc4a65ae-c645-4b25-a220-02b2c1ec8a49
-        file-extension: yml
+        import-check:
+          enabled: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/x_udi_label?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  ai:
+    model:
+      chat: ${SAAS_AI_PROVIDER:ollama}
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: gemma3:270m
+    openai:
+      base-url: ${QWEN_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode/v1}
+      api-key: ${DASHSCOPE_API_KEY:}
+      chat:
+        model: qwen-plus
