@@ -5,9 +5,5 @@ spring:
   profiles:
     active: dev
 
-  sql:
-    init:
-      mode: always
-
 mybatis-plus:
   type-handlers-package: com.lsxuan.udilabel.infrastructure.persistence.typehandler

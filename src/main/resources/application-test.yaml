@@ -8,9 +8,14 @@ spring:
         import-check:
           enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/x_udi_label?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:${DB_FILE_PATH:/opt/x-udi-label/data/x-udi-label-test.db}
+    username:
+    password:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema-sqlite.sql
   ai:
     model:
       chat: ${SAAS_AI_PROVIDER:ollama}
