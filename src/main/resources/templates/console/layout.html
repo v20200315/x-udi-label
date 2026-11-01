@@ -89,7 +89,11 @@
                         <a href="#" class="dropdown-item">Feedback</a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">Settings</a>
-                        <a href="#" class="dropdown-item">Logout</a>
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="dropdown-item">
+                                Logout
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
