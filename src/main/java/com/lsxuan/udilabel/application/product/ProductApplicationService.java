@@ -28,7 +28,9 @@ public class ProductApplicationService {
     @Transactional
     public ProductResponse create(CreateProductRequest request) {
 
-        UUID userId = currentUserContext.userId();
+        Boolean checked = currentUserContext.isAuthenticated();
+        String subject = currentUserContext.getCurrentSubject();
+        UUID userId = currentUserContext.getCurrentUserId();
 
         Product product = Product.create(request.indicatorDigit(), request.companyPrefix(), request.itemReference(),
             request.lotNumber(), request.name(), request.specification(), request.model(), request.productionDate(),
@@ -56,7 +58,7 @@ public class ProductApplicationService {
     @Transactional
     public ProductResponse update(UUID id, UpdateProductRequest request) {
 
-        UUID userId = currentUserContext.userId();
+        UUID userId = currentUserContext.getCurrentUserId();
 
         Product product =
             productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product does not exist."));
@@ -74,7 +76,7 @@ public class ProductApplicationService {
 
         Product product =
             productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product does not exist."));
-        product.deactivate(currentUserContext.userId());
+        product.deactivate(currentUserContext.getCurrentUserId());
 
         productRepository.update(product);
     }
