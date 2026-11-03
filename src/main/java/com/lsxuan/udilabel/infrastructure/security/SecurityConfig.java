@@ -35,6 +35,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
+                    "/access-denied",
                     "/logged-out",
                     "/error",
                     "/css/**",
@@ -56,6 +57,7 @@ public class SecurityConfig {
                         "/oauth2/authorization/keycloak"
                     )
                 )
+                .accessDeniedPage("/access-denied")
             )
 
             .sessionManagement(session -> session

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>403 - Access Denied</title>
+    <link rel="stylesheet" th:href="@{/css/tabler.min.css}">
+    <link rel="stylesheet" th:href="@{/css/tabler-icons.min.css}">
+</head>
+<body class="d-flex flex-column">
+<div class="page page-center">
+    <div class="container-tight py-4">
+        <div class="empty">
+            <div class="empty-header">403</div>
+            <p class="empty-title">Access Denied</p>
+            <p class="empty-subtitle text-secondary">
+                Sorry, you don't have permission to access this page.
+            </p>
+            <div class="empty-action">
+                <button type="button"
+                        class="btn btn-primary"
+                        onclick="history.back()">
+                    <i class="ti ti-arrow-left me-2"></i>
+                    Go back
+                </button>
+                <a th:href="@{/console}" class="btn btn-outline-secondary">
+                    <i class="ti ti-home me-2"></i>
+                    Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
