@@ -35,13 +35,13 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/access-denied",
+                    "/error-403",
                     "/logged-out",
                     "/error",
-                    "/css/**",
-                    "/js/**",
-                    "/images/**",
-                    "/fonts/**",
+                    "/console/css/**",
+                    "/console/js/**",
+                    "/console/images/**",
+                    "/console/fonts/**",
                     "/favicon.ico"
                 ).permitAll()
                 .anyRequest().authenticated()
@@ -57,7 +57,7 @@ public class SecurityConfig {
                         "/oauth2/authorization/keycloak"
                     )
                 )
-                .accessDeniedPage("/access-denied")
+                .accessDeniedPage("/error-403")
             )
 
             .sessionManagement(session -> session

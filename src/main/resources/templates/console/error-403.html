@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      data-bs-theme="light"
+      data-bs-theme-primary="lime">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Error 403 | X-UDI-LABEL</title>
+    <link rel="stylesheet" th:href="@{/console/css/tabler.min.css}"/>
+    <link rel="stylesheet" th:href="@{/console/css/tabler-themes.min.css}"/>
+
+</head>
+<body class="border-top-wide border-primary">
+<main class="page page-center" id="content">
+    <div class="container py-4">
+        <div class="empty">
+            <h1 class="empty-title">Sorry, you don't have permission to access this page.</h1>
+            <div class="empty-action">
+                <button type="button" class="btn btn-primary" onclick="history.back()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true" focusable="false" class="icon">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M5 12l14 0" />
+                        <path d="M5 12l6 6" />
+                        <path d="M5 12l6 -6" />
+                    </svg>
+                    Go back
+                </button>
+                <a th:href="@{/console}" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         aria-hidden="true" focusable="false" class="icon">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M5 12l-2 0l9 -9l9 9l-2 0"/>
+                        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/>
+                        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/>
+                    </svg>
+                    Take me home
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:src="@{/console/js/tabler.min.js}"></script>
+</body>
+</html>
