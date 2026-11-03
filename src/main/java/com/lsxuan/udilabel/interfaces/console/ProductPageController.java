@@ -30,6 +30,7 @@ public class ProductPageController {
     private final ProductApplicationService productApplicationService;
     private final LabelApplicationService labelApplicationService;
 
+    @PreAuthorize("hasAuthority('product:view')")
     @GetMapping("/product")
     public String productListPage(Model model) {
 
@@ -61,7 +62,7 @@ public class ProductPageController {
         return "console/product-table-with-page";
     }
 
-    @PreAuthorize("hasAuthority('role_admin')")
+    @PreAuthorize("hasAuthority('product:create')")
     @GetMapping("/product/new")
     public String newProductPage(Model model) {
 
@@ -73,6 +74,7 @@ public class ProductPageController {
         return "console/product-form";
     }
 
+    @PreAuthorize("hasAuthority('product:create')")
     @PostMapping("/product/new")
     public String createProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult bindingResult,
         Model model, RedirectAttributes redirectAttributes) {
@@ -101,6 +103,7 @@ public class ProductPageController {
         return "redirect:/product";
     }
 
+    @PreAuthorize("hasAuthority('product:update')")
     @GetMapping("/product/{productId}/edit")
     public String editProductPage(@PathVariable UUID productId, Model model) {
 
@@ -114,6 +117,7 @@ public class ProductPageController {
         return "console/product-form";
     }
 
+    @PreAuthorize("hasAuthority('product:update')")
     @PostMapping("/product/{productId}/edit")
     public String updateProduct(@PathVariable UUID productId,
         @Valid @ModelAttribute("productForm") ProductForm productForm, BindingResult bindingResult, Model model,
@@ -143,6 +147,7 @@ public class ProductPageController {
         return "redirect:/product";
     }
 
+    @PreAuthorize("hasAuthority('label:generate')")
     @GetMapping("/product/{productId}/label/generate")
     public String generateLabelPage(@PathVariable UUID productId, Model model) {
 
@@ -155,6 +160,7 @@ public class ProductPageController {
         return "console/product-label";
     }
 
+    @PreAuthorize("hasAuthority('label:generate')")
     @PostMapping("/product/label/generate")
     public String generateLabel(@RequestParam UUID productId, @RequestParam String templateCode, Model model) {
 

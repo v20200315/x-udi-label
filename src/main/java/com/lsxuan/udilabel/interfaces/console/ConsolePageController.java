@@ -16,10 +16,4 @@ public class ConsolePageController {
 
         return "console/index";
     }
-
-    @GetMapping("/udi")
-    public String udiPage() {
-
-        return "console/udi";
-    }
 }
