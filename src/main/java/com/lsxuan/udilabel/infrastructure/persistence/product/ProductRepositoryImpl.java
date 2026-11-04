@@ -14,46 +14,42 @@ import java.util.UUID;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final ProductMapper mapper;
+    private final ProductMapper productMapper;
 
-    public ProductRepositoryImpl(ProductMapper mapper) {
-        this.mapper = mapper;
+    public ProductRepositoryImpl(ProductMapper productMapper) {
+
+        this.productMapper = productMapper;
     }
 
     @Override
     public void save(Product product) {
 
-        mapper.insert(toDO(product));
+        productMapper.insert(toDO(product));
     }
 
     @Override
     public Optional<Product> findById(UUID id) {
 
-        ProductDO data = mapper.selectById(id);
-
-        if (data == null) {
-            return Optional.empty();
-        }
-
-        return Optional.of(toDomain(data));
+        ProductDO productDO = productMapper.selectById(id);
+        return Optional.ofNullable(productDO).map(this::toDomain);
     }
 
     @Override
     public List<Product> findAll() {
 
-        return mapper.selectList(new LambdaQueryWrapper<ProductDO>()).stream().map(this::toDomain).toList();
+        return productMapper.selectList(new LambdaQueryWrapper<ProductDO>()).stream().map(this::toDomain).toList();
     }
 
     @Override
     public void update(Product product) {
 
-        mapper.updateById(toDO(product));
+        productMapper.updateById(toDO(product));
     }
 
     @Override
     public void delete(UUID id) {
 
-        mapper.delete(new LambdaQueryWrapper<ProductDO>().eq(ProductDO::getId, id));
+        productMapper.delete(new LambdaQueryWrapper<ProductDO>().eq(ProductDO::getId, id));
     }
 
     @Override
@@ -63,38 +59,39 @@ public class ProductRepositoryImpl implements ProductRepository {
         qw.orderByDesc(ProductDO::getUpdatedAt);
 
         Page<ProductDO> page = new Page<>(pageNum, pageSize);
-        IPage<ProductDO> iPage = mapper.selectPage(page, qw);
+        IPage<ProductDO> iPage = productMapper.selectPage(page, qw);
         return iPage.convert(this::toDomain);
     }
 
     private ProductDO toDO(Product product) {
 
-        ProductDO data = new ProductDO();
-        data.setId(product.getId());
-        data.setIndicatorDigit(product.getIndicatorDigit());
-        data.setCompanyPrefix(product.getCompanyPrefix());
-        data.setItemReference(product.getItemReference());
-        data.setCheckDigit(product.getCheckDigit());
-        data.setLotNumber(product.getLotNumber());
-        data.setName(product.getName());
-        data.setSpecification(product.getSpecification());
-        data.setModel(product.getModel());
-        data.setProductionDate(product.getProductionDate());
-        data.setExpirationDate(product.getExpirationDate());
-        data.setStatus(product.getStatus());
-        data.setCreatedAt(product.getCreatedAt());
-        data.setCreatedBy(product.getCreatedBy());
-        data.setUpdatedAt(product.getUpdatedAt());
-        data.setUpdatedBy(product.getUpdatedBy());
+        ProductDO productDO = new ProductDO();
+        productDO.setId(product.getId());
+        productDO.setIndicatorDigit(product.getIndicatorDigit());
+        productDO.setCompanyPrefix(product.getCompanyPrefix());
+        productDO.setItemReference(product.getItemReference());
+        productDO.setCheckDigit(product.getCheckDigit());
+        productDO.setLotNumber(product.getLotNumber());
+        productDO.setName(product.getName());
+        productDO.setSpecification(product.getSpecification());
+        productDO.setModel(product.getModel());
+        productDO.setProductionDate(product.getProductionDate());
+        productDO.setExpirationDate(product.getExpirationDate());
+        productDO.setStatus(product.getStatus());
+        productDO.setCreatedAt(product.getCreatedAt());
+        productDO.setCreatedBy(product.getCreatedBy());
+        productDO.setUpdatedAt(product.getUpdatedAt());
+        productDO.setUpdatedBy(product.getUpdatedBy());
 
-        return data;
+        return productDO;
     }
 
-    private Product toDomain(ProductDO data) {
+    private Product toDomain(ProductDO productDO) {
 
-        return Product.reconstitute(data.getId(), data.getIndicatorDigit(), data.getCompanyPrefix(),
-            data.getItemReference(), data.getCheckDigit(), data.getLotNumber(), data.getName(), data.getSpecification(),
-            data.getModel(), data.getProductionDate(), data.getExpirationDate(), data.getStatus(), data.getCreatedAt(),
-            data.getCreatedBy(), data.getUpdatedAt(), data.getUpdatedBy());
+        return Product.reconstitute(productDO.getId(), productDO.getIndicatorDigit(), productDO.getCompanyPrefix(),
+            productDO.getItemReference(), productDO.getCheckDigit(), productDO.getLotNumber(), productDO.getName(),
+            productDO.getSpecification(), productDO.getModel(), productDO.getProductionDate(),
+            productDO.getExpirationDate(), productDO.getStatus(), productDO.getCreatedAt(), productDO.getCreatedBy(),
+            productDO.getUpdatedAt(), productDO.getUpdatedBy());
     }
 }

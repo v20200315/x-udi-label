@@ -19,5 +19,4 @@ public interface ProductRepository {
     void delete(UUID id);
 
     IPage<Product> findPage(int pageNum, int pageSize);
-
 }

@@ -33,6 +33,7 @@ public class Product {
     public static Product create(String indicatorDigit, String companyPrefix, String itemReference, String lotNumber,
         String name, String specification, String model, LocalDate productionDate, LocalDate expirationDate,
         UUID operatorId) {
+
         validateIndicatorDigit(indicatorDigit);
         validateCompanyPrefixAndItemReference(companyPrefix, itemReference);
         validateLotNumber(lotNumber);
