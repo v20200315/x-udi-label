@@ -1,22 +1,19 @@
 package com.lsxuan.udilabel.domain.user;
 
 import com.github.f4b6a3.uuid.UuidCreator;
+import com.lsxuan.udilabel.domain.base.Base;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
-public class User {
+public class User extends Base {
 
     private UUID id;
     private String email;
     private String displayName;
     private UserStatus status;
-    private LocalDateTime createdAt;
-    private UUID createdBy;
-    private LocalDateTime updatedAt;
-    private UUID updatedBy;
 
     protected User() {
 

@@ -1,6 +1,7 @@
 package com.lsxuan.udilabel.domain.product;
 
 import com.github.f4b6a3.uuid.UuidCreator;
+import com.lsxuan.udilabel.domain.base.Base;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
-public class Product {
+public class Product extends Base {
 
     private UUID id;
     private String indicatorDigit;
