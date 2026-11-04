@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@TableName(value = "application_user", autoResultMap = true)
+@TableName(value = "x_application_user", autoResultMap = true)
 public class UserDO {
 
     @TableField(typeHandler = UUIDTypeHandler.class)

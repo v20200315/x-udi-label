@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@TableName(value = "product", autoResultMap = true)
+@TableName(value = "x_product", autoResultMap = true)
 public class ProductDO {
 
     @TableField(typeHandler = UUIDTypeHandler.class)

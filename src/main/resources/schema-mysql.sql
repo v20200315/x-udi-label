@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `product`
+CREATE TABLE IF NOT EXISTS `x_product`
 (
     `id`              CHAR(36)     NOT NULL COMMENT '产品ID',
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `product`
   COLLATE = utf8mb4_0900_ai_ci
     COMMENT = '产品表';
 
-CREATE TABLE IF NOT EXISTS `application_user`
+CREATE TABLE IF NOT EXISTS `x_application_user`
 (
     `id`           CHAR(36)     NOT NULL COMMENT '内部用户ID',
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `application_user`
   COLLATE = utf8mb4_unicode_ci
     COMMENT = '应用用户';
 
-CREATE TABLE IF NOT EXISTS `user_identity`
+CREATE TABLE IF NOT EXISTS `x_user_identity`
 (
     `id`         CHAR(36)     NOT NULL COMMENT '身份映射ID',
     `user_id`    CHAR(36)     NOT NULL COMMENT '内部用户ID',
@@ -72,12 +72,7 @@ CREATE TABLE IF NOT EXISTS `user_identity`
 
     UNIQUE KEY `uk_user_identity_issuer_subject` (`issuer`, `subject`),
     UNIQUE KEY `uk_user_identity_user_issuer` (`user_id`, `issuer`),
-
-    CONSTRAINT `fk_user_identity_user`
-        FOREIGN KEY (`user_id`)
-            REFERENCES `application_user` (`id`)
-            ON DELETE RESTRICT
-            ON UPDATE RESTRICT
+    KEY `idx_user_identity_user_id` (`user_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
