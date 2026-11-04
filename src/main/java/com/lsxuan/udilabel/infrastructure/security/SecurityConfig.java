@@ -18,7 +18,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
         HttpSecurity http,
-        ClientRegistrationRepository clientRegistrationRepository
+        ClientRegistrationRepository clientRegistrationRepository,
+        KeycloakOidcUserService keycloakOidcUserService
     ) throws Exception {
 
         // OIDC Logout Handler
@@ -48,6 +49,9 @@ public class SecurityConfig {
             )
 
             .oauth2Login(oauth2 -> oauth2
+                .userInfoEndpoint(userInfo -> userInfo
+                    .oidcUserService(keycloakOidcUserService)
+                )
                 .defaultSuccessUrl("/console", true)
             )
 

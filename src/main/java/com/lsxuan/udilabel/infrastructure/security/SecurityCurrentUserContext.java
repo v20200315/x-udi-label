@@ -14,7 +14,17 @@ public class SecurityCurrentUserContext implements CurrentUserContext {
     @Override
     public UUID getCurrentUserId() {
 
-        return UUID.fromString("0198f3c2-7a21-7000-8000-000000000001");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            throw new IllegalStateException("No authenticated user found.");
+        }
+
+        if (authentication.getPrincipal() instanceof ApplicationOidcUser oidcUser) {
+            return oidcUser.getUserId();
+        }
+
+        throw new IllegalStateException("Authenticated principal is not an ApplicationOidcUser.");
     }
 
     @Override

@@ -28,8 +28,6 @@ public class ProductApplicationService {
     @Transactional
     public ProductResponse create(CreateProductRequest request) {
 
-        Boolean checked = currentUserContext.isAuthenticated();
-        String subject = currentUserContext.getCurrentSubject();
         UUID userId = currentUserContext.getCurrentUserId();
 
         Product product = Product.create(request.indicatorDigit(), request.companyPrefix(), request.itemReference(),

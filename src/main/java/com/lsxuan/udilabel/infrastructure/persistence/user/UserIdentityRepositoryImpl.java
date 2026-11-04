@@ -42,6 +42,16 @@ public class UserIdentityRepositoryImpl implements UserIdentityRepository {
     }
 
     @Override
+    public Optional<UserIdentity> findByIssuerAndSubject(String issuer, String subject) {
+
+        LambdaQueryWrapper<UserIdentityDO> qw = new LambdaQueryWrapper<>();
+        qw.eq(UserIdentityDO::getIssuer, issuer);
+        qw.eq(UserIdentityDO::getSubject, subject);
+        UserIdentityDO userIdentityDO = userIdentityMapper.selectOne(qw);
+        return Optional.ofNullable(userIdentityDO).map(this::toDomain);
+    }
+
+    @Override
     public List<UserIdentity> findAll() {
 
         return userIdentityMapper.selectList(null).stream().map(this::toDomain).toList();

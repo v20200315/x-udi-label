@@ -14,6 +14,8 @@ public interface UserIdentityRepository {
 
     Optional<UserIdentity> findByUserId(String userId);
 
+    Optional<UserIdentity> findByIssuerAndSubject(String issuer, String subject);
+
     List<UserIdentity> findAll();
 
     void update(UserIdentity userIdentity);

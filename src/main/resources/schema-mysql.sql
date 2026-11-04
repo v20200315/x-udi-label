@@ -77,3 +77,22 @@ CREATE TABLE IF NOT EXISTS `x_user_identity`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci
     COMMENT = '外部用户身份映射';
+
+-- Initialize system user.
+INSERT INTO `x_application_user` (`id`,
+                                  `email`,
+                                  `display_name`,
+                                  `status`,
+                                  `created_at`,
+                                  `created_by`,
+                                  `updated_at`,
+                                  `updated_by`)
+VALUES ('00000000-0000-0000-0000-000000000001',
+        'system@x-udi-label.local',
+        'System',
+        1,
+        CURRENT_TIMESTAMP,
+        NULL,
+        CURRENT_TIMESTAMP,
+        NULL)
+ON DUPLICATE KEY UPDATE `id` = `id`;
