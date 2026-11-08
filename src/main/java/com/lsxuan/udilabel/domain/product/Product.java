@@ -153,30 +153,38 @@ public class Product extends Base {
     private static void validateIndicatorDigit(String indicatorDigit) {
 
         if (indicatorDigit == null || !indicatorDigit.matches("[0-9]")) {
-            throw new IllegalArgumentException("indicatorDigit must be a single digit from 0 to 9.");
+            throw new IllegalArgumentException("IndicatorDigit must be a single digit from 0 to 9.");
         }
     }
 
     private static void validateCompanyPrefixAndItemReference(String companyPrefix, String itemReference) {
 
-        if (companyPrefix == null || !companyPrefix.matches("[0-9]+")) {
-            throw new IllegalArgumentException("companyPrefix must contain only digits.");
+        if (companyPrefix == null || companyPrefix.isBlank()) {
+            throw new IllegalArgumentException("CompanyPrefix cannot be empty.");
+        }
+        
+        if (!companyPrefix.matches("69\\d{5,8}")) {
+            throw new IllegalArgumentException("CompanyPrefix must start with 69 and be 7 to 10 digits long.");
         }
 
-        if (itemReference == null || !itemReference.matches("[0-9]+")) {
-            throw new IllegalArgumentException("itemReference must contain only digits.");
+        if (itemReference == null || itemReference.isBlank()) {
+            throw new IllegalArgumentException("ItemReference cannot be empty.");
+        }
+
+        if (!itemReference.matches("[0-9]+")) {
+            throw new IllegalArgumentException("ItemReference must contain only digits.");
         }
 
         if (companyPrefix.length() + itemReference.length() != 12) {
             throw new IllegalArgumentException(
-                "companyPrefix and itemReference must contain exactly 12 digits in total.");
+                "CompanyPrefix and itemReference must contain exactly 12 digits in total.");
         }
     }
 
     private static void validateLotNumber(String lotNumber) {
 
         if (lotNumber == null || lotNumber.isBlank()) {
-            throw new IllegalArgumentException("lotNumber cannot be empty.");
+            throw new IllegalArgumentException("LotNumber cannot be empty.");
         }
     }
 
@@ -190,21 +198,21 @@ public class Product extends Base {
     private static void validateProductionDate(LocalDate productionDate) {
 
         if (productionDate == null) {
-            throw new IllegalArgumentException("productionDate cannot be empty.");
+            throw new IllegalArgumentException("ProductionDate cannot be empty.");
         }
     }
 
     private static void validateExpirationDate(LocalDate expirationDate) {
 
         if (expirationDate == null) {
-            throw new IllegalArgumentException("expirationDate cannot be empty.");
+            throw new IllegalArgumentException("ExpirationDate cannot be empty.");
         }
     }
 
     private static void validateOperatorId(UUID operatorId) {
 
         if (operatorId == null) {
-            throw new IllegalArgumentException("operatorId cannot be empty.");
+            throw new IllegalArgumentException("OperatorId cannot be empty.");
         }
     }
 

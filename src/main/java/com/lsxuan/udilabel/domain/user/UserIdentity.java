@@ -75,7 +75,7 @@ public class UserIdentity extends Base {
     private static void validateOperatorId(UUID operatorId) {
 
         if (operatorId == null) {
-            throw new IllegalArgumentException("operatorId cannot be empty.");
+            throw new IllegalArgumentException("OperatorId cannot be empty.");
         }
     }
 }

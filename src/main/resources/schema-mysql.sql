@@ -96,3 +96,20 @@ VALUES ('00000000-0000-0000-0000-000000000001',
         CURRENT_TIMESTAMP,
         NULL)
 ON DUPLICATE KEY UPDATE `id` = `id`;
+
+CREATE TABLE IF NOT EXISTS x_user_company
+(
+    id             CHAR(36)     NOT NULL,
+    user_id        CHAR(36)     NOT NULL,
+    company_name   VARCHAR(255) NOT NULL,
+    company_prefix VARCHAR(12)  NOT NULL,
+
+    `created_at`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_by`   CHAR(36)     NULL COMMENT '创建人ID',
+    `updated_at`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `updated_by`   CHAR(36)     NULL COMMENT '更新人ID',
+
+    PRIMARY KEY (id),
+    KEY idx_user_id (user_id)
+);

@@ -18,7 +18,7 @@ public class ProductForm {
     private String indicatorDigit;
 
     @NotBlank(message = "请输入厂商识别代码")
-    @Pattern(regexp = "^69\\d{5,8}$", message = "厂商识别代码必须以69开头，且为7至10位纯数字")
+    @Pattern(regexp = "69\\d{5,8}", message = "厂商识别代码必须以69开头，且为7至10位纯数字")
     private String companyPrefix;
 
     @NotBlank(message = "请输入商品项目代码")
